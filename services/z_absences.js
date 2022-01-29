@@ -8,8 +8,8 @@ const databaseFormId = process.env.NOTION_DATABASE_FORM
 const databaseAbscencesId = process.env.NOTION_DATABASE_ABSENCES
 
 //variables that will be sent in from frontend (hardcoded for now)
-var meetingNumber = 6;
-var meetingType = "Product";
+var meetingNumber = 1;
+var meetingType = "Engineering";
 
 const notionAbsences = new Client({
     auth: process.env.NOTION_TOKEN_ABSENCES,
