@@ -8,8 +8,8 @@ const databaseFormId = process.env.NOTION_DATABASE_FORM
 
 //variables that will be sent in from frontend (hardcoded for now)
 var meetingNumber = 1;
-var meetingType = "General";
-var password = "first";
+var meetingType = "Engineering";
+var password = "hi";
 
 
 module.exports = async function getForms() {
