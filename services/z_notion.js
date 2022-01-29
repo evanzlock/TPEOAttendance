@@ -44,7 +44,7 @@ module.exports = async function getMembers() {
     //console.log(results);
 
     const members = results.map(page => {
-        console.log(page.properties['First Year'].checkbox)
+        console.log(page);
         //console.log(page.properties.Team.multi_select[0].name)
 
         return {
@@ -55,10 +55,16 @@ module.exports = async function getMembers() {
             excused: page.properties['Excused Absences'].number,
             unexcused: page.properties['Unexcused Absences'].number,
             total: page.properties['Total Meetings Attended'].number,
+            pageid: page.id
         }
     })
     return members
 }
+
+
+
+
+
 
 
 
