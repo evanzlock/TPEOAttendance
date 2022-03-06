@@ -1,0 +1,15 @@
+.members {
+    margin: 20px 0;
+    padding: 15px 25px;
+    background: #316290;
+    box-shadow: 3px 1px 3px rgba(red, green, blue, alpha);
+    border-radius: 5px;
+}
+
+.members h3 {
+    font-size: 25px;
+}
+
+.members li {
+    margin: 5px 0;
+}
