@@ -1,22 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import PostData from './PostData';
+import React, { useState } from 'react';
 export default function CreateMeeting() {
-    const url = "https://localhost:3000/api";
     const [meetingInfo, setInfo] = useState({
         code: "",
         duration: ""
     })
-    // function submit(e) {
-    //     e.preventDefault();
-    //     Axios.post(url, {
-    //         code: meetingInfo.code,
-    //         duration: parseInt(meetingInfo.duration)
-    //     })
-    //         .then(res => {
-    //             console.log(res.data);
-    //         })
-    // }
+    const [isPending, setPending] = useState(false);
+    function submit(e) {
+        e.preventDefault();
+        setPending(true);
+        const data = {
+            code: meetingInfo.code,
+            duration: meetingInfo.duration
+        }
+        console.log(data);
+        fetch('http://localhost:5000/meeting', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.log('Error:', error);
+            })
+    }
     function handle(e) {
         const newInfo = {
             code: meetingInfo.code,
@@ -28,10 +39,11 @@ export default function CreateMeeting() {
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
-            <form onSubmit={(e) => PostData(e)}>
+            <form onSubmit={(e) => submit(e)}>
                 <input onChange={(e) => handle(e)} id="code" placeholder="Enter meeting code" type="text"></input>
                 <input onChange={(e) => handle(e)} id="duration" placeholder="Enter meeting duration" type="number"></input>
-                <button type="submit">Generate Meeting</button>
+                {!isPending && <button type="submit">Generate Meeting</button>}
+                {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>
             {/* </  button> */}
         </div>

@@ -7,11 +7,17 @@ const router = express.Router();
 const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
+const { request } = require('http');
 //middleware
+app.use(cors);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(express.static('public'))
-
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.get('/members', async (req, res) => {
   const members = await getMembers()
   res.json(members)
@@ -25,17 +31,8 @@ app.get('/absences', async (req, res) => {
   res.json(absences);
 })
 app.post('/meeting', (req, res) => {
-  // if (typeof req.body.code === 'undefined' || typeof req.body.duration === 'undefined') {
-  //   res.status(400).json({ error: 'missing parameter', data: null });
-  //   return;
-  // }
-  // let data = {
-  //   code: req.body.code,
-  //   duration: req.body.duration
-  // };
-
-  // res.status(200).json({ error: null, data: data }); // We received the value and only to show the example, returns it in a json within the key 'data'
-  console.log(req.body)
+  console.log(req.body);
+  res.send("Success" + req.body);
 });
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
