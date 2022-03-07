@@ -9,15 +9,21 @@ const app = express();
 const bodyParser = require("body-parser");
 const { request } = require('http');
 //middleware
-app.use(cors);
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
-app.use(express.static('public'))
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors({
+  origin: '*'
+}));
+app.use(express.json());
+//app.use(bodyParser.urlencoded({ extended: false }))
+//app.use(bodyParser.json());
+//app.use(express.static('public'))
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+var code = "";
+var duration = null;
+//endpoints 
 app.get('/members', async (req, res) => {
   const members = await getMembers()
   res.json(members)
@@ -31,8 +37,31 @@ app.get('/absences', async (req, res) => {
   res.json(absences);
 })
 app.post('/meeting', (req, res) => {
-  console.log(req.body);
-  res.send("Success" + req.body);
+  if (req.body == undefined) {
+    return res.json({
+      msg: "Error: parameter not defined",
+      data: {}
+    });
+  }
+  if (code != "") {
+    return res.json({
+      msg: "Meeting currently active. Cancel other meeting before starting new one",
+      data: { code }
+    })
+  }
+  const body = req.body
+  console.log(body);
+  code = body.code;
+  duration = body.duration;
+  console.log(code);
+  console.log(duration);
+  return res.json({
+    msg: "Success",
+    data: {
+      code,
+      duration
+    }
+  });
 });
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
@@ -120,5 +149,5 @@ const updateMembersData = async () => {
   }
 
 }
-
+//TODO: call updateMembersData() when meeting timer ends on frontend
 updateMembersData();

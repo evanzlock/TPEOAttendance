@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+
 export default function CreateMeeting() {
     const [meetingInfo, setInfo] = useState({
         code: "",
-        duration: ""
+        duration: "",
+        type: ""
     })
     const [isPending, setPending] = useState(false);
     function submit(e) {
@@ -10,7 +12,8 @@ export default function CreateMeeting() {
         setPending(true);
         const data = {
             code: meetingInfo.code,
-            duration: meetingInfo.duration
+            duration: meetingInfo.duration,
+            type: meetingInfo.type
         }
         console.log(data);
         fetch('http://localhost:5000/meeting', {
@@ -18,20 +21,23 @@ export default function CreateMeeting() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: data
+            body: JSON.stringify(data)
         })
-            .then(response => response.json())
+            .then(response => response.text())
+            .then(text => console.log(text))
             .then(data => {
                 console.log('Success:', data);
             })
             .catch((error) => {
                 console.log('Error:', error);
             })
+        setPending(false);
     }
     function handle(e) {
         const newInfo = {
             code: meetingInfo.code,
-            duration: meetingInfo.duration
+            duration: meetingInfo.duration,
+            type: meetingInfo.type
         };
         newInfo[e.target.id] = e.target.value;
         setInfo(newInfo);
@@ -42,6 +48,13 @@ export default function CreateMeeting() {
             <form onSubmit={(e) => submit(e)}>
                 <input onChange={(e) => handle(e)} id="code" placeholder="Enter meeting code" type="text"></input>
                 <input onChange={(e) => handle(e)} id="duration" placeholder="Enter meeting duration" type="number"></input>
+                <select onChange={(e) => handle(e)} id="type" name="type">
+                    <option value="" selected disabled hidden>Choose a Meeting Type</option>
+                    <option value="general">General</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="design">Design</option>
+                    <option value="product">Product</option>
+                </select>
                 {!isPending && <button type="submit">Generate Meeting</button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>
