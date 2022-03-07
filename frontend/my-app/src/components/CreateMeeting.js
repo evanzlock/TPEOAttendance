@@ -7,6 +7,7 @@ export default function CreateMeeting() {
         type: ""
     })
     const [isPending, setPending] = useState(false);
+    //send code, duration, and type to backend for attendance verification
     function submit(e) {
         e.preventDefault();
         setPending(true);
@@ -25,9 +26,6 @@ export default function CreateMeeting() {
         })
             .then(response => response.text())
             .then(text => console.log(text))
-            .then(data => {
-                console.log('Success:', data);
-            })
             .catch((error) => {
                 console.log('Error:', error);
             })

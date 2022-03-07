@@ -6,23 +6,15 @@ const PORT = process.env.PORT || 5000
 const router = express.Router();
 const cors = require("cors");
 const app = express();
-const bodyParser = require("body-parser");
-const { request } = require('http');
 //middleware
 app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
-//app.use(bodyParser.urlencoded({ extended: false }))
-//app.use(bodyParser.json());
-//app.use(express.static('public'))
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+//global variables that hold code and duration for verification
 var code = "";
 var duration = null;
+var type = "";
 //endpoints 
 app.get('/members', async (req, res) => {
   const members = await getMembers()
@@ -53,13 +45,15 @@ app.post('/meeting', (req, res) => {
   console.log(body);
   code = body.code;
   duration = body.duration;
+  type = body.type;
   console.log(code);
   console.log(duration);
   return res.json({
     msg: "Success",
     data: {
       code,
-      duration
+      duration,
+      type
     }
   });
 });
