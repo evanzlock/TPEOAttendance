@@ -41,6 +41,22 @@ app.get('/meetingHistory', async (req,res) => {
   const meetingHist = await getMeetingHistory();
   res.json(meetingHist);
 })
+app.post('/updateDatabases', (req, res) => {
+  if (req.body == undefined) {
+    return res.json({
+      msg: "Error: parameter not defined",
+      data: {}
+    });
+  }
+  const body = req.body;
+  const meetingType = body.type;
+  const meetingNumber = body.number;
+  updateMembersData(meetingType, meetingNumber);
+  return res.json ({
+    msg: "success",
+    data: {}
+  })
+})
 app.post('/meeting', (req, res) => {
   if (req.body == undefined) {
     return res.json({
@@ -71,10 +87,10 @@ app.post('/meeting', (req, res) => {
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
 //variables that will be sent in from frontend (hardcoded for now)
-var meetingType = "Engineering";
-var meetingNumber= 1;
+//var meetingType = "Engineering";
+//var meetingNumber= 1;
 
-const updateMembersData = async () => {
+const updateMembersData = async (meetingType,  meetingNumber) => {
   const { Client } = require('@notionhq/client');
   const notion = new Client({ auth: process.env.NOTION_KEY });
   var unexcused = 0;
@@ -157,5 +173,3 @@ const updateMembersData = async () => {
   return {type: meetingType, unexcused: unexcused, attended: attended};
 
 }
-//TODO: call updateMembersData() when meeting timer ends on frontend
-//updateMembersData();
