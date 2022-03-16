@@ -40,8 +40,11 @@ const MemberTable = () => {
   ]
 
   const options={
+    //turns the row green or red depending on num absences
     rowStyle: rowData => ({backgroundColor: rowData.unexcused  > 3 ? "#ffa9a966" : "#a3ebb366"}),
     filtering:true,
+    //hard coded for now
+    //TODO: have variable that tracks number of members
     pageSize: 43
   }
 
