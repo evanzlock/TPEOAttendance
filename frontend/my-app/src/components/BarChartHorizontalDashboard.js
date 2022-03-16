@@ -10,26 +10,23 @@ ChartJS.register(
 
 const BarChartHorizontalDashboard = () => {
     const [chart, setChart] = useState([]);
+    //hardcoded for now
+    var lastGen = 2;
+    var lastEng = 2;
+    var lastDes = 2;
+    var lastProd = 2;
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/meetingHistory', {
+        await fetch("http://localhost:5000/BarChartHorizData?lastGen="+lastGen+"&lastEng="+lastEng+"&lastDes="+lastDes+"&lastProd="+lastProd, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
             response.json().then((json) => {
-                //find last meeting number for each
-                var lastGen = 2;
-                var lastEng = 2;
-                var lastDes = 2;
-                var lastProd = 2;
-                var gendata = json.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd)||(x.meetingType === 'Engineering' && x.meetingNumber == lastEng) || (x.meetingType === 'General' && x.meetingNumber == lastGen) || (x.meetingType === 'Design' && x.meetingNumber == lastDes));
-                gendata.sort(function(a, b) {
-                    return parseFloat(a.meetingType) - parseFloat(b.meetingType);
-                });
-                setChart(gendata);
+                console.log(json);
+                setChart(json);
             })
         }).catch(error => {
             console.log(error);

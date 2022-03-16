@@ -16,18 +16,14 @@ const LineChartDashboard = () => {
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/meetingHistory', {
+        await fetch('http://localhost:5000/MeetingBarData?type=General', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
             response.json().then((json) => {
-                var gendata = json.filter(x => x.meetingType === 'General');
-                gendata.sort(function(a, b) {
-                    return parseFloat(a.meetingNumber) - parseFloat(b.meetingNumber);
-                });
-                setChart(gendata);
+                setChart(json);
             })
         }).catch(error => {
             console.log(error);

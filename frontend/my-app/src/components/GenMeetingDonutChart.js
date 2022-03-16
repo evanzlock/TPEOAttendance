@@ -12,15 +12,14 @@ const GenMeetingDonutChart = () => {
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/meetingHistory', {
+        await fetch("http://localhost:5000/DonutData?type=General&last=" + lastGenMeetingNum, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
             response.json().then((json) => {
-                var gendata = json.filter(x => x.meetingType === 'General' && x.meetingNumber === lastGenMeetingNum);
-                setChart(gendata[0].attendancePercent);
+                setChart(json[0].attendancePercent);
             })
         }).catch(error => {
             console.log(error);
