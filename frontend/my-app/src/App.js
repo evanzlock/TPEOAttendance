@@ -3,9 +3,7 @@ import CreateMeeting from './components/CreateMeeting';
 function App() {
   return (
     <div className="App">
-      <CreateMeeting>
-
-      </CreateMeeting>
+      <CreateMeeting></CreateMeeting>
     </div>
   );
 }

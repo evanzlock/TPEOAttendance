@@ -11,10 +11,12 @@ app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
-//global variables that hold code and duration for verification
+//global variables that are sent in from frontendfor verification
+var meetingNumber = 1;
 var code = "";
 var duration = null;
-var type = "";
+var meetingType = "";
+var active = false;
 //endpoints 
 app.get('/members', async (req, res) => {
   const members = await getMembers()
@@ -28,8 +30,25 @@ app.get('/absences', async (req, res) => {
   const absences = await getAbsenceForms();
   res.json(absences);
 })
+//cancel meeting
+app.put('/cancel', (req, res) => {
+  code = "";
+  duration = null;
+  meetingType = "";
+  active = false;
+  return res.json({
+    msg: "Meeting cancelled",
+    data: {
+      code,
+      duration,
+      type
+    }
+  })
+})
+//endpoint for receiving meeting info
 app.post('/meeting', (req, res) => {
-  if (req.body == undefined) {
+  const body = req.body
+  if (body.code == "" || body.duration == "" || body.type == "") {
     return res.json({
       msg: "Error: parameter not defined",
       data: {}
@@ -41,11 +60,11 @@ app.post('/meeting', (req, res) => {
       data: { code }
     })
   }
-  const body = req.body
   console.log(body);
   code = body.code;
   duration = body.duration;
   type = body.type;
+  active = true;
   console.log(code);
   console.log(duration);
   return res.json({
@@ -59,8 +78,6 @@ app.post('/meeting', (req, res) => {
 });
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
-//variables that will be sent in from frontend (hardcoded for now)
-var meetingType = "Engineering";
 
 const updateMembersData = async () => {
   const { Client } = require('@notionhq/client');
@@ -68,8 +85,8 @@ const updateMembersData = async () => {
 
   //TODO: MAKE MORE EFFICIENT- should only do this computation 
   //once and figure out how to store it
-  const absences = await getAbsenceForms();
-  const present = await getForms();
+  const absences = await getAbsenceForms(meetingNumber, meetingType, code);
+  const present = await getForms(meetingNumber, meetingType, code);
 
   constAbsencesSet = new Set();
   for (var i = 0; i < absences.length; i++) {

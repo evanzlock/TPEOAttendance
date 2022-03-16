@@ -1,6 +1,9 @@
 const dotenv = require('dotenv').config();
 const { Client } = require('@notionhq/client');
 const notion = new Client({ auth: process.env.NOTION_KEY, });
+//database variables
+const databaseMemberId = process.env.NOTION_DATABASE_MEMBER
+const databaseFormId = process.env.NOTION_DATABASE_FORM
 
 module.exports = async function getForms() {
     const payload = {

@@ -17,7 +17,7 @@ const notionAbsences = new Client({
 
 
 
-module.exports = async function getAbsenceForms() {
+module.exports = async function getAbsenceForms(meetingNumber, meetingType, password) {
     const payload = {
         path: `databases/${databaseAbscencesId}/query`,
         method: 'POST'

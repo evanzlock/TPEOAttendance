@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-
+import configData from "../config.json";
+import Timer from "./Timer";
+const URL = configData.DEV_URL;
+console.log(URL);
 export default function CreateMeeting() {
     const [meetingInfo, setInfo] = useState({
         code: "",
@@ -7,29 +10,41 @@ export default function CreateMeeting() {
         type: ""
     })
     const [isPending, setPending] = useState(false);
+    const [isActive, setActive] = useState(false);
     //send code, duration, and type to backend for attendance verification
+    function cancel() {
+        fetch(`${URL}/cancel`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.text())
+            .then(text => console.log(text))
+            .then(setActive(false));
+    }
     function submit(e) {
         e.preventDefault();
         setPending(true);
-        const data = {
-            code: meetingInfo.code,
-            duration: meetingInfo.duration,
-            type: meetingInfo.type
-        }
-        console.log(data);
-        fetch('http://localhost:5000/meeting', {
+        const data = JSON.stringify(meetingInfo);
+        fetch(`${URL}/meeting`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: data
         })
             .then(response => response.text())
             .then(text => console.log(text))
+            .then(data => {
+                setPending(false)
+                setActive(true);
+            })
             .catch((error) => {
                 console.log('Error:', error);
+                setPending(false);
+                setActive(true);
             })
-        setPending(false);
     }
     function handle(e) {
         const newInfo = {
@@ -55,8 +70,11 @@ export default function CreateMeeting() {
                 </select>
                 {!isPending && <button type="submit">Generate Meeting</button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
+                {isActive && <Timer minutes={meetingInfo.duration}></Timer>}
             </form>
             {/* </  button> */}
+            {/* {isActive && <button onClick={cancel()}>Cancel Meeting</button>} */}
         </div>
+
     )
 }
