@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import configData from "../config.json";
 import Timer from "./Timer";
+import Button from '@mui/material/Button';
 const URL = configData.DEV_URL;
 console.log(URL);
 export default function CreateMeeting() {
@@ -9,10 +10,12 @@ export default function CreateMeeting() {
         duration: "",
         type: ""
     })
+    const [toggleInfo, showInfo] = useState(false);
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
     //send code, duration, and type to backend for attendance verification
-    function cancel() {
+    function cancel(e) {
+        e.preventDefault();
         fetch(`${URL}/cancel`, {
             method: 'PUT',
             headers: {
@@ -21,7 +24,8 @@ export default function CreateMeeting() {
         })
             .then(response => response.text())
             .then(text => console.log(text))
-            .then(setActive(false));
+            .then(() => setActive(false),
+                showInfo(!toggleInfo));
     }
     function submit(e) {
         e.preventDefault();
@@ -37,8 +41,9 @@ export default function CreateMeeting() {
             .then(response => response.text())
             .then(text => console.log(text))
             .then(data => {
-                setPending(false)
+                setPending(false);
                 setActive(true);
+                showInfo(!toggleInfo);
             })
             .catch((error) => {
                 console.log('Error:', error);
@@ -55,10 +60,15 @@ export default function CreateMeeting() {
         newInfo[e.target.id] = e.target.value;
         setInfo(newInfo);
     }
+    function showForm(e) {
+        e.preventDefault();
+        showInfo(true);
+    }
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
-            <form onSubmit={(e) => submit(e)}>
+            {!toggleInfo && !isActive && <Button variant="contained" onClick={showForm}>Generate Meeting</Button>}
+            {toggleInfo && <form onSubmit={(e) => submit(e)}>
                 <input onChange={(e) => handle(e)} id="code" placeholder="Enter meeting code" type="text"></input>
                 <input onChange={(e) => handle(e)} id="duration" placeholder="Enter meeting duration" type="number"></input>
                 <select onChange={(e) => handle(e)} id="type" name="type">
@@ -68,12 +78,11 @@ export default function CreateMeeting() {
                     <option value="design">Design</option>
                     <option value="product">Product</option>
                 </select>
-                {!isPending && <button type="submit">Generate Meeting</button>}
+                {!isPending && <Button variant="contained" type="submit">Begin Meeting</Button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
-                {isActive && <Timer minutes={meetingInfo.duration}></Timer>}
-            </form>
-            {/* </  button> */}
-            {/* {isActive && <button onClick={cancel()}>Cancel Meeting</button>} */}
+            </form>}
+            {isActive && <Timer minutes={meetingInfo.duration}></Timer>}
+            {isActive && <button onClick={cancel}>Cancel Meeting</button>}
         </div>
 
     )

@@ -17,19 +17,19 @@ var code = "";
 var duration = null;
 var meetingType = "";
 var active = false;
-//endpoints 
-app.get('/members', async (req, res) => {
-  const members = await getMembers()
-  res.json(members)
-})
-app.get('/forms', async (req, res) => {
-  const forms = await getForms()
-  res.json(forms)
-})
-app.get('/absences', async (req, res) => {
-  const absences = await getAbsenceForms();
-  res.json(absences);
-})
+// test endpoints for notion databases 
+// app.get('/members', async (req, res) => {
+//   const members = await getMembers()
+//   res.json(members)
+// })
+// app.get('/forms', async (req, res) => {
+//   const forms = await getForms()
+//   res.json(forms)
+// })
+// app.get('/absences', async (req, res) => {
+//   const absences = await getAbsenceForms();
+//   res.json(absences);
+// })
 //cancel meeting
 app.put('/cancel', (req, res) => {
   code = "";
@@ -41,15 +41,21 @@ app.put('/cancel', (req, res) => {
     data: {
       code,
       duration,
-      type
+      meetingType
     }
+  })
+})
+//call update members data when timer ends
+app.put('update', (req, res) => {
+  return res.json({
+    msg: "Sucess: Updated Notion Database"
   })
 })
 //endpoint for receiving meeting info
 app.post('/meeting', (req, res) => {
   const body = req.body
   if (body.code == "" || body.duration == "" || body.type == "") {
-    return res.json({
+    return res.status(400).json({
       msg: "Error: parameter not defined",
       data: {}
     });
@@ -60,19 +66,16 @@ app.post('/meeting', (req, res) => {
       data: { code }
     })
   }
-  console.log(body);
   code = body.code;
   duration = body.duration;
-  type = body.type;
+  meetingType = body.type;
   active = true;
-  console.log(code);
-  console.log(duration);
   return res.json({
     msg: "Success",
     data: {
       code,
       duration,
-      type
+      meetingType
     }
   });
 });
@@ -85,7 +88,7 @@ const updateMembersData = async () => {
 
   //TODO: MAKE MORE EFFICIENT- should only do this computation 
   //once and figure out how to store it
-  const absences = await getAbsenceForms(meetingNumber, meetingType, code);
+  const absences = await getAbsenceForms(meetingNumber, meetingType);
   const present = await getForms(meetingNumber, meetingType, code);
 
   constAbsencesSet = new Set();

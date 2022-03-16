@@ -27,6 +27,10 @@ export default function Timer(props) {
         }
         return () => clearInterval(intervalId);
     }, [isActive, time.counter])
+    function handleClick(e) {
+        e.preventDefault();
+        setIsActive(!isActive);
+    }
     return (
         <div className="container">
             <div className="time">
@@ -35,7 +39,7 @@ export default function Timer(props) {
                 <span className="second">{time.second}</span>
             </div>
             <div className="buttons">
-                <button onClick={() => setIsActive(!isActive)} className="start">
+                <button onClick={handleClick} className="start">
                     {isActive ? "Pause" : "Start"}
                 </button>
             </div>
