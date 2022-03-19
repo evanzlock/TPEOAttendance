@@ -40,15 +40,16 @@ const MemberTable = (props) => {
       //turns the row green or red depending on num absences
       rowStyle: rowData => ({backgroundColor: rowData.unexcused  > 3 ? "#ffa9a966" : "#a3ebb366"}),
       //TODO: KEEP TRACK OF THIS NUMBER (do not hardcode)
-      pageSize: 43
+      pageSize: 43,
+      tableLayout: 'fixed',
     };
     
 
   const columns=[
-    {title: "Name", field: "name", filtering:false},
-    {title: "Team", field: "team", lookup: {Design: "Design", Engineering: "Engineering", Product: "Product", Executive: "Executive"}},
-    {title: "Meetings Attended", field: "total", filtering:false},
-    {title: "Unexcused Absences", field: "unexcused", filtering:false},
+    {title: "Name", field: "name", filtering:false, width: '10px'},
+    {title: "Team", field: "team", lookup: {Design: "Design", Engineering: "Engineering", Product: "Product", Executive: "Executive"}, width: '10px'},
+    {title: "Meetings Attended", field: "total", filtering:false, width: '10px'},
+    {title: "Unexcused Absences", field: "unexcused", filtering:false, width: '10px'},
   ]
 
   
