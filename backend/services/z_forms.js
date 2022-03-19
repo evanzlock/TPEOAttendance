@@ -2,17 +2,8 @@ const { Client } = require('@notionhq/client')
 const dotenv = require('dotenv').config()
 const notion = new Client({ auth: process.env.NOTION_KEY, })
 
-const databaseMemberId = process.env.NOTION_DATABASE_MEMBER
-
 const databaseFormId = process.env.NOTION_DATABASE_FORM
 
-<<<<<<< HEAD
-=======
-//variables that will be sent in from frontend (hardcoded for now)
-var meetingNumber = 1;
-var meetingType = "Engineering";
-var password = "hi";
->>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
 
 
 module.exports = async function getForms(meetingNumber, meetingType, password) {
