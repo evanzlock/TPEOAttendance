@@ -48,15 +48,29 @@ var data = {
 }
 
 var options = {
-    title: {
-        display: true,
-        text: "Attendance Overview"
-
+    plugins: {
+        title: {
+            display: true,
+            text: "Numerical Overview",
+            align: "start",
+            padding: {
+                top: 30,
+                bottom: 30
+            }
+        },
+        legend: {
+             display:false
+        }
     },
     maintainAspectRatio: false,
     scales: {
         y: {
-            beginAtZero: true
+            beginAtZero: true,
+        },
+        x: {
+            grid: {
+                lineWidth: 0
+            }
         }
     }
 }

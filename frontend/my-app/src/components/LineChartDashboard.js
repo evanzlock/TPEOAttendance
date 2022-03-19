@@ -37,7 +37,7 @@ const LineChartDashboard = () => {
 var data = {
     labels: chart.map(x => x.meetingNumber),
         datasets: [{
-            label: 'Attendance Overview',
+            label: 'Percent Attended',
             data: chart.map(x => x.attendancePercent),
             backgroundColor: [
                 '#FF6900'
@@ -51,6 +51,15 @@ var data = {
 }
 
 var options = {
+    plugins: {
+        title: {
+            display: true,
+            text: 'Attendance Overview'
+        },
+        legend: {
+             display:false
+        }
+    },
     maintainAspectRatio: false,
     scales: {
         y: {

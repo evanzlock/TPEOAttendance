@@ -54,10 +54,28 @@ var data = {
 }
 
 var options = {
+    plugins: {
+        title: {
+            display: true,
+            text: 'This Month'
+        },
+        legend: {
+             display:false
+        }
+    },
     maintainAspectRatio: false,
     scales: {
         y: {
-            beginAtZero: true
+            beginAtZero: true,
+            grid: {
+                lineWidth: 0
+            },
+        },
+        x: {
+            grid: {
+                lineWidth: 0
+            },
+            display: false
         }
     },
     indexAxis: 'y'

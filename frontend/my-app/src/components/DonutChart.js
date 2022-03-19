@@ -46,6 +46,15 @@ var data = {
 }
 
 var options = {
+    plugins: {
+        title: {
+            display: true,
+            text: 'This Month'
+        },
+        legend: {
+             display:false
+        }
+    },
     maintainAspectRatio: false,
 }
 
@@ -58,7 +67,7 @@ var options = {
              height = chart.height,
              ctx = chart.ctx;
              ctx.restore();
-             var fontSize = (height / 160).toFixed(1);
+             var fontSize = (height / 400).toFixed(1);
              ctx.font = fontSize + "em sans-serif";
              ctx.textBaseline = "top";
              var text = "% attended",
