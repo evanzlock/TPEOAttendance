@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Doughnut} from 'react-chartjs-2';
 import {Chart as ChartJS} from "chart.js/auto"
 
-const GenMeetingDonutChart = () => {
+const DonutChart = (props) => {
 
     //should get this from automated meeting number, hardcoded for now
     const lastGenMeetingNum = 2;
@@ -12,7 +12,7 @@ const GenMeetingDonutChart = () => {
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch("http://localhost:5000/DonutData?type=General&last=" + lastGenMeetingNum, {
+        await fetch("http://localhost:5000/DonutData?type=" + props.type + "&last=" + lastGenMeetingNum, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ var data = {
         datasets: [{
             data: [chart, 100-chart],
             backgroundColor: [
-                '#FFD5B8',
+                props.color,
                 '#FFFFFF',
             ],
             borderColor: [
@@ -72,13 +72,14 @@ var options = {
    
    
      return (
-      
+         <div>
            <Doughnut 
              data={data} 
              options={options}
              plugins={plugins} 
             />
+        </div>
      );
    }
 
-export default GenMeetingDonutChart;
+export default DonutChart;

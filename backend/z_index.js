@@ -27,7 +27,16 @@ var duration = null;
 //endpoints 
 app.get('/members', async (req, res) => {
   const members = await getMembers()
-  res.json(members)
+  var type = req.query.type;
+  if (type == 'General') {
+    console.log("hello");
+    res.json(members);
+  } else {
+    console.log("hi");
+    const result = members.filter(x => x.team === type);
+    res.json(result);
+  }
+  
 })
 app.get('/forms', async (req, res) => {
   const forms = await getForms()

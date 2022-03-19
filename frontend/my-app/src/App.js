@@ -1,36 +1,19 @@
 import './App.css';
-import CreateMeeting from './components/CreateMeeting';
-import LineChartDashboard from './components/LineChartDashboard';
-import BarChartHorizontalDashboard from './components/BarChartHorizontalDashboard';
-import GenMeetingBarChart from './components/GenMeetingBarChart';
-import GenMeetingDonutChart from './components/GenMeetingDonutChart';
-import MemberTable from './components/MemberTable';
+
+import Dashboard from './pages/dashboard';
+import TeamPage from './pages/teamPage';
 
 function App() {
   return (
     <div className="App">
-      <CreateMeeting>
-      </CreateMeeting>
-
-      <div style={{ width: 700 }}>
-      <LineChartDashboard/>
-    </div>
-
-    <div style={{ width: 700 }}>
-      <BarChartHorizontalDashboard/>
-    </div>
-    <div style={{ width: 700 }}>
-      <GenMeetingBarChart/>
-    </div>
-    <div style={{ width: 700 }}>
-      <GenMeetingDonutChart/>
-    </div>
-    
-    <div>
-    <MemberTable/>
-    </div>
-      
-
+       <Dashboard/>
+      {/*
+     
+      <TeamPage type='General' color = '#FFD5B8'/>
+      <TeamPage type='Product' color = '#B2D1FF'/>
+      <TeamPage type='Design' color = '#E6CDFF'/>
+      <TeamPage type='Engineering' color = '#FFC4DC'/>
+      */}
     </div>
   );
 }
