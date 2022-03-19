@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import configData from "../configurl.json";
 import Button from '@mui/material/Button';
@@ -27,10 +28,24 @@ export default function CreateMeeting(props) {
         type: "",
         startTime: null,
         endTime: null
+=======
+import React, { useState } from 'react';
+import configData from "../config.json";
+import Timer from "./Timer";
+import Button from '@mui/material/Button';
+const URL = configData.DEV_URL;
+console.log(URL);
+export default function CreateMeeting() {
+    const [meetingInfo, setInfo] = useState({
+        code: "",
+        duration: "",
+        type: ""
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
     })
     const [toggleInfo, showInfo] = useState(false);
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
+<<<<<<< HEAD
     const [meetingNumber, setMeetingNumber] = useState("");
     useEffect(() => {
         console.log('use effect');
@@ -65,6 +80,12 @@ export default function CreateMeeting(props) {
     function end(e) {
         e.preventDefault();
         fetch(`${url}/update`, {
+=======
+    //send code, duration, and type to backend for attendance verification
+    function cancel(e) {
+        e.preventDefault();
+        fetch(`${URL}/cancel`, {
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,14 +99,23 @@ export default function CreateMeeting(props) {
     function submit(e) {
         e.preventDefault();
         setPending(true);
+<<<<<<< HEAD
         const info = JSON.stringify(meetingInfo);
         console.log(info);
         fetch(`${url}/meeting`, {
+=======
+        const data = JSON.stringify(meetingInfo);
+        fetch(`${URL}/meeting`, {
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+<<<<<<< HEAD
             body: info
+=======
+            body: data
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
         })
             .then(response => response.text())
             .then(text => console.log(text))
@@ -101,6 +131,7 @@ export default function CreateMeeting(props) {
             })
     }
     function handle(e) {
+<<<<<<< HEAD
         let newInfo = {
             code: meetingInfo.code,
             type: meetingInfo.type,
@@ -118,6 +149,14 @@ export default function CreateMeeting(props) {
         else {
             newInfo[key] = input;
         }
+=======
+        const newInfo = {
+            code: meetingInfo.code,
+            duration: meetingInfo.duration,
+            type: meetingInfo.type
+        };
+        newInfo[e.target.id] = e.target.value;
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
         setInfo(newInfo);
     }
     function showForm(e) {
@@ -127,6 +166,7 @@ export default function CreateMeeting(props) {
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
+<<<<<<< HEAD
             {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
             {!toggleInfo && isActive && <h1>There is already a meeting in progress.</h1>}
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
@@ -138,13 +178,30 @@ export default function CreateMeeting(props) {
                     <option value="Engineering">Engineering</option>
                     <option value="Design">Design</option>
                     <option value="Product">Product</option>
+=======
+            {!toggleInfo && !isActive && <Button variant="contained" onClick={showForm}>Generate Meeting</Button>}
+            {toggleInfo && <form onSubmit={(e) => submit(e)}>
+                <input onChange={(e) => handle(e)} id="code" placeholder="Enter meeting code" type="text"></input>
+                <input onChange={(e) => handle(e)} id="duration" placeholder="Enter meeting duration" type="number"></input>
+                <select onChange={(e) => handle(e)} id="type" name="type">
+                    <option value="" selected disabled hidden>Choose a Meeting Type</option>
+                    <option value="general">General</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="design">Design</option>
+                    <option value="product">Product</option>
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
                 </select>
                 {!isPending && <Button variant="contained" type="submit">Begin Meeting</Button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>}
+<<<<<<< HEAD
             {/* {isActive && <Timer minutes={meetingInfo.duration}></Timer>} */}
             {isActive && <button onClick={cancel}>Cancel Meeting</button>}
             {isActive && <button onClick={end}>End Meeting</button>}
+=======
+            {isActive && <Timer minutes={meetingInfo.duration}></Timer>}
+            {isActive && <button onClick={cancel}>Cancel Meeting</button>}
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
         </div>
 
     )

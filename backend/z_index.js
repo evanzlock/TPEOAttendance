@@ -6,18 +6,35 @@ const PORT = process.env.PORT || 5000
 const router = express.Router();
 const cors = require("cors");
 const app = express();
+<<<<<<< HEAD
 const { Client } = require('@notionhq/client');
 const notion = new Client({ auth: process.env.NOTION_KEY });
+=======
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
 //middleware
 app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
+<<<<<<< HEAD
 // test endpoints for notion databases 
 app.get('/members', async (req, res) => {
   const members = await getMembers()
   res.json(members)
 })
+=======
+//global variables that are sent in from frontendfor verification
+var meetingNumber = 1;
+var code = "";
+var duration = null;
+var meetingType = "";
+var active = false;
+// test endpoints for notion databases 
+// app.get('/members', async (req, res) => {
+//   const members = await getMembers()
+//   res.json(members)
+// })
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
 // app.get('/forms', async (req, res) => {
 //   const forms = await getForms()
 //   res.json(forms)
@@ -26,6 +43,7 @@ app.get('/members', async (req, res) => {
 //   const absences = await getAbsenceForms();
 //   res.json(absences);
 // })
+<<<<<<< HEAD
 // `/${meetingTypePage}
 app.get('/info', async (req, res) => {
   const pageId = process.env.NOTION_MEETING_INFO;
@@ -176,11 +194,69 @@ app.post('/meeting', async (req, res) => {
     }
   });
 })
+=======
+//cancel meeting
+app.put('/cancel', (req, res) => {
+  code = "";
+  duration = null;
+  meetingType = "";
+  active = false;
+  return res.json({
+    msg: "Meeting cancelled",
+    data: {
+      code,
+      duration,
+      meetingType
+    }
+  })
+})
+//call update members data when timer ends
+app.put('update', (req, res) => {
+  return res.json({
+    msg: "Sucess: Updated Notion Database"
+  })
+})
+//endpoint for receiving meeting info
+app.post('/meeting', (req, res) => {
+  const body = req.body
+  if (body.code == "" || body.duration == "" || body.type == "") {
+    return res.status(400).json({
+      msg: "Error: parameter not defined",
+      data: {}
+    });
+  }
+  if (code != "") {
+    return res.json({
+      msg: "Meeting currently active. Cancel other meeting before starting new one",
+      data: { code }
+    })
+  }
+  code = body.code;
+  duration = body.duration;
+  meetingType = body.type;
+  active = true;
+  return res.json({
+    msg: "Success",
+    data: {
+      code,
+      duration,
+      meetingType
+    }
+  });
+});
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
 
 const updateMembersData = async () => {
+<<<<<<< HEAD
   //TODO: MAKE MORE EFFICIENT- should only do this computation
+=======
+  const { Client } = require('@notionhq/client');
+  const notion = new Client({ auth: process.env.NOTION_KEY });
+
+  //TODO: MAKE MORE EFFICIENT- should only do this computation 
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
   //once and figure out how to store it
   const absences = await getAbsenceForms(meetingNumber, meetingType);
   const present = await getForms(meetingNumber, meetingType, code);
@@ -258,4 +334,8 @@ const updateMembersData = async () => {
 
 }
 //TODO: call updateMembersData() when meeting timer ends on frontend
+<<<<<<< HEAD
 //updateMembersData();
+=======
+updateMembersData();
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c

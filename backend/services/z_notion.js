@@ -27,7 +27,10 @@ module.exports = async function getForms() {
 }
 
 module.exports = async function getMembers() {
+<<<<<<< HEAD
     const databaseMemberId = process.env.NOTION_DATABASE_MEMBER
+=======
+>>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
     const payload = {
         path: `databases/${databaseMemberId}/query`,
         method: 'POST'
