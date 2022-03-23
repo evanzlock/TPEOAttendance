@@ -49,6 +49,7 @@ export default function CreateMeeting(props) {
             })
     }, []);
     //send code, duration, and type to backend for attendance verification
+    //change toggle info so generate meeting is shown again
     function cancel(e) {
         e.preventDefault();
         fetch(`${url}/cancel`, {
@@ -59,8 +60,10 @@ export default function CreateMeeting(props) {
         })
             .then(response => response.text())
             .then(text => console.log(text))
-            .then(() => setActive(false),
-                showInfo(!toggleInfo));
+            .then(() => console.log("third then"),
+                setActive(false),
+                showInfo(!toggleInfo),
+                console.log(isActive, toggleInfo));
     }
     function end(e) {
         e.preventDefault();
@@ -71,9 +74,13 @@ export default function CreateMeeting(props) {
             }
         })
             .then(response => response.text())
-            .then(text => console.log(text))
+            .then(text => console.log(text),
+                console.log(isActive),
+                console.log(toggleInfo))
             .then(() => setActive(false),
-                showInfo(!toggleInfo));
+                showInfo(!toggleInfo),
+                console.log(isActive),
+                console.log(toggleInfo));
     }
     function submit(e) {
         e.preventDefault();
@@ -124,6 +131,7 @@ export default function CreateMeeting(props) {
         e.preventDefault();
         showInfo(true);
     }
+    // TODO: change toggle so ending a meeting shows generate meeting
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}

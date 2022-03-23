@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
-<<<<<<< HEAD
-import configData from "../configurl.json";
+import configData from "../config.json";
 var URL = configData.DEV_URL;
-=======
->>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
 export default function Timer(props) {
 
     const [time, setTime] = useState({
@@ -13,7 +10,6 @@ export default function Timer(props) {
         counter: props.minutes * 60
     })
     const [isActive, setIsActive] = useState(false);
-<<<<<<< HEAD
     const [endTimer, stopTimer] = useState(false);
     useEffect(() => {
         let intervalId;
@@ -22,11 +18,6 @@ export default function Timer(props) {
             if (time.counter === -2) {
                 stopTimer(true);
             }
-=======
-    useEffect(() => {
-        let intervalId;
-        if (isActive && time.counter !== -1) {
->>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
             intervalId = setInterval(() => {
                 const secondCounter = time.counter % 60;
                 const minuteCounter = Math.floor(time.counter / 60);
@@ -43,7 +34,6 @@ export default function Timer(props) {
         }
         return () => clearInterval(intervalId);
     }, [isActive, time.counter])
-<<<<<<< HEAD
     //put request to update members data when timer ends/meeting ends
     useEffect(() => {
         fetch(`${URL}/update`, {
@@ -55,8 +45,6 @@ export default function Timer(props) {
             .then(response => response.text())
             .then(text => console.log(text))
     }, [endTimer])
-=======
->>>>>>> e6cb0a28f6f775d09ad5bbc11a282585fecb214c
     function handleClick(e) {
         e.preventDefault();
         setIsActive(!isActive);
