@@ -29,10 +29,8 @@ app.get('/members', async (req, res) => {
   const members = await getMembers()
   var type = req.query.type;
   if (type == 'General') {
-    console.log("hello");
     res.json(members);
   } else {
-    console.log("hi");
     const result = members.filter(x => x.team === type);
     res.json(result);
   }
