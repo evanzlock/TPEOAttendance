@@ -14,17 +14,17 @@ import './teamPage.css';
 
 const TeamPage = (props) => {
   return (
-    <div class = "team">
+    <div className = "team">
       <CreateMeeting/>
-      <div class="flex-container">
-        <div class="flex1">
+      <div className="flex-container">
+        <div className="flex1">
           <Card border="light">
             <Card.Body >
               <DonutChart type = {props.type} color = {props.color}/>
             </Card.Body>
           </Card>
         </div>
-        <div class="flex2">
+        <div className="flex2">
           <Card border="light">
             <Card.Body >
             <MeetingBarChart type = {props.type} color = {props.color}/>

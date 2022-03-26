@@ -9,17 +9,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const dashboard = () => {
   return (
-    <div class="dash">
+    <div className="dash">
       <CreateMeeting/>
-      <div class="flex-container">
-        <div class="flex-child1">
+      <div className="flex-container">
+        <div className="flex-child1">
           <Card border="light">
             <Card.Body >
               <LineChartDashboard/>
             </Card.Body>
           </Card>
         </div>
-        <div class="flex-child2">
+        <div className="flex-child2">
         <Card border="light">
             <Card.Body >
               <BarChartHorizontalDashboard/>
@@ -27,7 +27,7 @@ const dashboard = () => {
         </Card>
         </div>
       </div>
-      <div class="table">
+      <div className="table">
       <Card border="light">
             <Card.Body >
             
