@@ -62,7 +62,7 @@ var options = {
              display:false
         }
     },
-    maintainAspectRatio: false,
+    //maintainAspectRatio: false,
     scales: {
         y: {
             beginAtZero: true,
