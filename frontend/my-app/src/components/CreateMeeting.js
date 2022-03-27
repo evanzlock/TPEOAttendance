@@ -24,7 +24,6 @@ var style = {
 export default function CreateMeeting(props) {
     const [meetingInfo, setInfo] = useState({
         code: "",
-        type: "",
         startTime: null,
         endTime: null
     })
@@ -32,18 +31,20 @@ export default function CreateMeeting(props) {
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
+
     useEffect(() => {
-        console.log('use effect');
-        fetch(`${url}/general`, {
+        console.log(`${url}/meeting/${props.meetingType}`)
+        fetch(`${url}/meeting/${props.meetingType}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
-            .then(response => response.json())
+            .then(response => console.log(response.json()))
             .then(data => {
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
+                console.log("AHHHHHHHHHHH")
                 console.log(meetingNumber);
                 console.log(isActive);
             })
@@ -52,7 +53,7 @@ export default function CreateMeeting(props) {
     //change toggle info so generate meeting is shown again
     function cancel(e) {
         e.preventDefault();
-        fetch(`${url}/cancel`, {
+        fetch(`${url}/cancel/${props.meetingType}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ export default function CreateMeeting(props) {
     }
     function end(e) {
         e.preventDefault();
-        fetch(`${url}/update`, {
+        fetch(`${url}/update/${props.meetingType}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export default function CreateMeeting(props) {
         setPending(true);
         const info = JSON.stringify(meetingInfo);
         console.log(info);
-        fetch(`${url}/meeting`, {
+        fetch(`${url}/meeting/${props.meetingType}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +111,6 @@ export default function CreateMeeting(props) {
     function handle(e) {
         let newInfo = {
             code: meetingInfo.code,
-            type: meetingInfo.type,
             startTime: meetingInfo.startTime,
             endTime: meetingInfo.endTime
         }
@@ -135,18 +135,18 @@ export default function CreateMeeting(props) {
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
-            {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
+            {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate {props.meetingType} Meeting #{meetingNumber}</button>}
             {!toggleInfo && isActive && <h1>There is already a meeting in progress.</h1>}
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
                 <input id="code" required onChange={(e) => handle(e)} placeholder="Enter meeting code" type="text"></input>
                 <input id="duration" required onChange={(e) => handle(e)} placeholder="Enter meeting duration" type="number"></input>
-                <select onChange={(e) => handle(e)} id="type" name="type">
+                {/* <select onChange={(e) => handle(e)} id="type" name="type">
                     <option value="" selected disabled hidden>Choose a Meeting Type</option>
                     <option value="General">General</option>
                     <option value="Engineering">Engineering</option>
                     <option value="Design">Design</option>
                     <option value="Product">Product</option>
-                </select>
+                </select> */}
                 {!isPending && <Button variant="contained" type="submit">Begin Meeting</Button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>}

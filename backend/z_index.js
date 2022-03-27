@@ -17,17 +17,17 @@ app.use(express.json());
 
 app.get('/meetinginfo/:meetingtype', async (req, res) => {
   const meetingType = req.params.meetingType
-  if (meetingType == "engineering") {
+  if (meetingType == "Engineering") {
     const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
   }
-  else if (meetingType == "general") {
+  else if (meetingType == "General") {
     const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
   }
-  else if (meetingType == "product") {
+  else if (meetingType == "Product") {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
   }
-  else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  else if (meetingType == "Design") {
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
   }
   const response = await notion.pages.retrieve({ page_id: pageId });
   return res.json({
@@ -42,20 +42,21 @@ app.get('/meetinginfo/:meetingtype', async (req, res) => {
   })
 });
 app.get('/meeting/:meetingType', async (req, res) => {
-  if (meetingType == "engineering") {
+  const meetingType = req.params.meetingType
+  if (meetingType == "Engineering") {
     const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
     const propertyType = "Engineering Meeting Number"
   }
-  else if (meetingType == "general") {
+  else if (meetingType == "General") {
     const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
     const propertyType = "General Meeting Number"
   }
-  else if (meetingType == "product") {
+  else if (meetingType == "Product") {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
     const propertyType = "Product Meeting Number"
   }
-  else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  else if (meetingType == "Design") {
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   }
   const response = await notion.pages.retrieve({ page_id: pageId });
@@ -65,32 +66,34 @@ app.get('/meeting/:meetingType', async (req, res) => {
     activeMeeting = true;
   }
   let number = response.properties[propertyType].number
+  let endtime = response.properties['End Time'].number
   return res.json({
     msg: "Home page opened",
     data: {
       activeMeeting,
-      number
+      number,
+      endtime
     }
   })
 });
 
 //cancel meeting
-app.put('/cancel', async (req, res) => {
+app.put('/cancel/:meetingType', async (req, res) => {
   const body = req.body
   const meetingType = req.params.meetingType
-  if (meetingType == "engineering") {
+  if (meetingType == "Engineering") {
     const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
     const propertyType = "Engineering Meeting Number"
   }
-  else if (meetingType == "general") {
+  else if (meetingType == "General") {
     const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
     const propertyType = "General Meeting Number"
   }
-  else if (meetingType == "product") {
+  else if (meetingType == "Product") {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
     const propertyType = "Product Meeting Number"
   }
-  else if (meetingType == "design") {
+  else if (meetingType == "Design") {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   } const response = await notion.pages.update({
@@ -124,20 +127,20 @@ app.put('/cancel', async (req, res) => {
 app.put('/update/:meetingType', async (req, res) => {
   const body = req.body
   const meetingType = req.params.meetingType
-  if (meetingType == "engineering") {
+  if (meetingType == "Engineering") {
     const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
     const propertyType = "Engineering Meeting Number"
   }
-  else if (meetingType == "general") {
+  else if (meetingType == "General") {
     const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
     const propertyType = "General Meeting Number"
   }
-  else if (meetingType == "product") {
+  else if (meetingType == "Product") {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
     const propertyType = "Product Meeting Number"
   }
-  else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  else if (meetingType == "Design") {
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   }
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
@@ -177,20 +180,20 @@ app.put('/update/:meetingType', async (req, res) => {
 //endpoint for receiving meeting info and updating database with it
 app.post('/meeting/:meetingType', async (req, res) => {
   const body = req.body
-  if (meetingType == "engineering") {
+  if (meetingType == "Engineering") {
     const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
     const propertyType = "Engineering Meeting Number"
   }
-  else if (meetingType == "general") {
+  else if (meetingType == "General") {
     const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
     const propertyType = "General Meeting Number"
   }
-  else if (meetingType == "product") {
+  else if (meetingType == "Product") {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
     const propertyType = "Product Meeting Number"
   }
-  else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  else if (meetingType == "Design") {
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   }
   const meetingNumber = properties[propertyType].number;
@@ -255,7 +258,7 @@ const updateMembersData = async () => {
     var obj = members[i];
     //console.log(obj);
     if (obj != undefined) {
-      //ensures only general and team-specific meetings counted for attendance
+      //ensures only General and team-specific meetings counted for attendance
       if (meetingType === "General" || obj.team === meetingType) {
         if (constPresentSet.has(obj.name)) {
           //console.log("present " + obj.name);
