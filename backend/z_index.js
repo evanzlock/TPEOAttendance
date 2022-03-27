@@ -13,22 +13,22 @@ app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
-// test endpoints for notion databases 
-app.get('/members', async (req, res) => {
-  const members = await getMembers()
-  res.json(members)
-})
-// app.get('/forms', async (req, res) => {
-//   const forms = await getForms()
-//   res.json(forms)
-// })
-// app.get('/absences', async (req, res) => {
-//   const absences = await getAbsenceForms();
-//   res.json(absences);
-// })
-// `/${meetingTypePage}
-app.get('/generalinfo', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
+
+
+app.get('/meetinginfo/:meetingtype', async (req, res) => {
+  const meetingType = req.params.meetingType
+  if (meetingType == "engineering") {
+    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+  }
+  else if (meetingType == "general") {
+    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+  }
+  else if (meetingType == "product") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  }
+  else if (meetingType == "design") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  }
   const response = await notion.pages.retrieve({ page_id: pageId });
   return res.json({
     msg: "This is the meeting info",
@@ -41,15 +41,30 @@ app.get('/generalinfo', async (req, res) => {
     }
   })
 });
-app.get('/general', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
+app.get('/meeting/:meetingType', async (req, res) => {
+  if (meetingType == "engineering") {
+    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    const propertyType = "Engineering Meeting Number"
+  }
+  else if (meetingType == "general") {
+    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    const propertyType = "General Meeting Number"
+  }
+  else if (meetingType == "product") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Product Meeting Number"
+  }
+  else if (meetingType == "design") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Design Meeting Number"
+  }
   const response = await notion.pages.retrieve({ page_id: pageId });
   var activeMeeting = false;
   // is an empty array if manually deleted otherwise an empty string
   if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
     activeMeeting = true;
   }
-  let number = response.properties['General Meeting Number'].number
+  let number = response.properties[propertyType].number
   return res.json({
     msg: "Home page opened",
     data: {
@@ -58,107 +73,27 @@ app.get('/general', async (req, res) => {
     }
   })
 });
-//load page for engineering
-app.get('/engineering', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.retrieve({ page_id: pageId });
-  var activeMeeting = false;
-  // is an empty array if manually deleted otherwise an empty string
-  if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
-    activeMeeting = true;
-  }
-  let number = response.properties['Engineering Meeting Number'].number
-  return res.json({
-    msg: "Home page opened",
-    data: {
-      activeMeeting,
-      number
-    }
-  })
-});
-app.get('/generalinfo', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.retrieve({ page_id: pageId });
-  return res.json({
-    msg: "This is the meeting info",
-    data: {
-      start: response.properties['Start Time'],
-      end: response.properties['End Time'],
-      type: response.properties['Meeting Type'].select,
-      code: response.properties['Meeting Code'],
-      codeTitle: response.properties['Meeting Code'].title
-    }
-  })
-});
-//load page for design
-app.get('/design', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.retrieve({ page_id: pageId });
-  var activeMeeting = false;
-  // is an empty array if manually deleted otherwise an empty string
-  if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
-    activeMeeting = true;
-  }
-  let number = response.properties['General Meeting Number'].number
-  return res.json({
-    msg: "Home page opened",
-    data: {
-      activeMeeting,
-      number
-    }
-  })
-});
-app.get('/generalinfo', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.retrieve({ page_id: pageId });
-  return res.json({
-    msg: "This is the meeting info",
-    data: {
-      start: response.properties['Start Time'],
-      end: response.properties['End Time'],
-      type: response.properties['Meeting Type'].select,
-      code: response.properties['Meeting Code'],
-      codeTitle: response.properties['Meeting Code'].title
-    }
-  })
-});
-//load page for product
-app.get('/product', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.retrieve({ page_id: pageId });
-  var activeMeeting = false;
-  // is an empty array if manually deleted otherwise an empty string
-  if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
-    activeMeeting = true;
-  }
-  let number = response.properties['General Meeting Number'].number
-  return res.json({
-    msg: "Home page opened",
-    data: {
-      activeMeeting,
-      number
-    }
-  })
-});
-app.get('/generalinfo', async (req, res) => {
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.retrieve({ page_id: pageId });
-  return res.json({
-    msg: "This is the meeting info",
-    data: {
-      start: response.properties['Start Time'],
-      end: response.properties['End Time'],
-      type: response.properties['Meeting Type'].select,
-      code: response.properties['Meeting Code'],
-      codeTitle: response.properties['Meeting Code'].title
-    }
-  })
-});
+
 //cancel meeting
 app.put('/cancel', async (req, res) => {
   const body = req.body
-  const pageId = process.env.NOTION_MEETING_INFO;
-  const response = await notion.pages.update({
+  const meetingType = req.params.meetingType
+  if (meetingType == "engineering") {
+    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    const propertyType = "Engineering Meeting Number"
+  }
+  else if (meetingType == "general") {
+    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    const propertyType = "General Meeting Number"
+  }
+  else if (meetingType == "product") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Product Meeting Number"
+  }
+  else if (meetingType == "design") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Design Meeting Number"
+  } const response = await notion.pages.update({
     page_id: pageId,
     properties: {
       'Meeting Type': {
@@ -186,9 +121,25 @@ app.put('/cancel', async (req, res) => {
   })
 });
 //call update members data when timer ends
-app.put('/update', async (req, res) => {
+app.put('/update/:meetingType', async (req, res) => {
   const body = req.body
-  const pageId = process.env.NOTION_MEETING_INFO;
+  const meetingType = req.params.meetingType
+  if (meetingType == "engineering") {
+    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    const propertyType = "Engineering Meeting Number"
+  }
+  else if (meetingType == "general") {
+    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    const propertyType = "General Meeting Number"
+  }
+  else if (meetingType == "product") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Product Meeting Number"
+  }
+  else if (meetingType == "design") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Design Meeting Number"
+  }
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
   let meetingNumber = parseInt(retrieveInfo.properties['General Meeting Number'].number)
   let newMeetingNumber = parseInt(retrieveInfo.properties['General Meeting Number'].number + 1)
@@ -223,18 +174,29 @@ app.put('/update', async (req, res) => {
     msg: "Meeting Ended and entries updated"
   })
 });
-//endpoint for receiving meeting info
-app.post('/meeting', async (req, res) => {
+//endpoint for receiving meeting info and updating database with it
+app.post('/meeting/:meetingType', async (req, res) => {
   const body = req.body
-  const pageId = process.env.NOTION_MEETING_INFO;
+  if (meetingType == "engineering") {
+    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    const propertyType = "Engineering Meeting Number"
+  }
+  else if (meetingType == "general") {
+    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    const propertyType = "General Meeting Number"
+  }
+  else if (meetingType == "product") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Product Meeting Number"
+  }
+  else if (meetingType == "design") {
+    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const propertyType = "Design Meeting Number"
+  }
+  const meetingNumber = properties[propertyType].number;
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
-      'Meeting Type': {
-        select: {
-          name: body.type
-        }
-      },
       'Meeting Code': {
         title: [{
           text: {
@@ -249,20 +211,10 @@ app.post('/meeting', async (req, res) => {
       },
       'End Time': {
         number: body.startTime
+      },
+      propertyType: {
+        number: meetingNumber + 1
       }
-      //this should be updated in endpoint for ending meetings
-      // 'Product Meeting Number': {
-
-      // },
-      // 'General Meeting Number': {
-
-      // },
-      // 'Engineering Meeting Number': {
-
-      // },
-      // 'Design Meeting Number': {
-
-      // }
     },
   });
   return res.json({
