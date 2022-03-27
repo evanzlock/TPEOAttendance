@@ -13,10 +13,6 @@
 
 # misc
 .env
-<<<<<<< HEAD
-node_modules
-dashboard.js
-=======
 .DS_Store
 .env.local
 .env.development.local
@@ -26,4 +22,3 @@ dashboard.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
->>>>>>> DashAndTeamPages
