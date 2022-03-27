@@ -9,13 +9,13 @@ ChartJS.register(
 )
 
 
-const GenMeetingBarChart = () => {
+const MeetingBarChart = (props) => {
 
     const [chart, setChart] = useState([]);
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/MeetingBarData?type=General', {
+        await fetch('http://localhost:5000/MeetingBarData?type=' + props.type, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ var data = {
             label: 'Attendance Overview',
             data: chart.map(x => x.attendancePercent),
             backgroundColor: [
-                '#FFD5B8',
+                props.color,
             ],
             borderWidth: 1
         }]
@@ -48,15 +48,29 @@ var data = {
 }
 
 var options = {
-    title: {
-        display: true,
-        text: "Attendance Overview"
-
+    plugins: {
+        title: {
+            display: true,
+            text: "Numerical Overview",
+            align: "start",
+            padding: {
+                top: 30,
+                bottom: 30
+            }
+        },
+        legend: {
+             display:false
+        }
     },
     maintainAspectRatio: false,
     scales: {
         y: {
-            beginAtZero: true
+            beginAtZero: true,
+        },
+        x: {
+            grid: {
+                lineWidth: 0
+            }
         }
     }
 }
@@ -72,4 +86,4 @@ var options = {
   )
 }
 
-export default GenMeetingBarChart
+export default MeetingBarChart
