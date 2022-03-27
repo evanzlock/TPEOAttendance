@@ -14,13 +14,8 @@ module.exports = async function getForms(meetingNumber, meetingType, password) {
     const { results } = await notion.request(payload)
     //console.log(results)
     const forms = results.map(page => {
-<<<<<<< HEAD
-        //console.log(page.properties.Name.title);
-        // verify that form entries match the most recent meeting number, the right type of meeting, and the right code
-=======
         //parses through the form records
         //only returns the forms that have the correct meeting type/number and code
->>>>>>> DashAndTeamPages
         if (page.properties['Meeting Number'].number === meetingNumber
             && page.properties['Type of Meeting'].multi_select[0].name === meetingType
             && page.properties['Code Submitted'].rich_text[0].text.content === password) {

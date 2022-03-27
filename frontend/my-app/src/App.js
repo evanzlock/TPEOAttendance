@@ -6,13 +6,12 @@ import TeamPage from './pages/teamPage';
 function App() {
   return (
     <div className="App">
-      <Dashboard/>
+       <TeamPage type='Engineering' color = '#FFC4DC'/>
+      
     
       {/*
       //TODO: with navbar update with routing
-      
-     
-       <TeamPage type='Engineering' color = '#FFC4DC'/>
+      <Dashboard/>
       <TeamPage type='General' color = '#FFD5B8'/>
       <TeamPage type='Product' color = '#B2D1FF'/>
       <TeamPage type='Design' color = '#E6CDFF'/>

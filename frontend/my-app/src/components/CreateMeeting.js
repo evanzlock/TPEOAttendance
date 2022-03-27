@@ -3,25 +3,26 @@ import configData from "../configurl.json";
 import Button from '@mui/material/Button';
 var url = configData.DEV_URL;
 console.log(url);
-var style = {
-    position: 'absolute',
-    width: '396px',
-    height: '71px',
-    left: '320px',
-    top: '165px',
-    background: '#FFD5B8',
-    boxShadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)',
-    borderRadius: '10px',
-    fontFamily: 'Montserrat',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '24px',
-    lineHeight: '29px',
-    color: '#000000',
-    cursor: 'pointer'
 
-}
 export default function CreateMeeting(props) {
+    var style = {
+        /*position: 'absolute',
+        width: '396px',
+        height: '71px',
+        left: '320px',
+        top: '165px', */
+        background: props.color,
+        boxShadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)',
+        borderRadius: '10px',
+        fontFamily: 'Montserrat',
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: '24px',
+        lineHeight: '29px',
+        color: '#000000',
+        cursor: 'pointer'
+    
+    } 
     const [meetingInfo, setInfo] = useState({
         code: "",
         type: "",

@@ -14,9 +14,20 @@ import './teamPage.css';
 
 const TeamPage = (props) => {
   return (
+    <div>
+
+      <div className = "button">
+      
+      <CreateMeeting color = {props.color}/>
+    
+
+      </div>
+
     <div className = "team">
-      <CreateMeeting/>
+      
       <div className="flex-container">
+      
+      
         <div className="flex1">
           <Card border="light">
             <Card.Body >
@@ -33,6 +44,7 @@ const TeamPage = (props) => {
         </div>
       </div>
       <MemberTable type = {props.type}/>
+    </div>
     </div>
   )
 }

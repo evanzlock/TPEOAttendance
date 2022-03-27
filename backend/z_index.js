@@ -14,6 +14,56 @@ app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
+app.get('/members', async (req, res) => {
+  const members = await getMembers()
+  var type = req.query.type;
+  if (type == 'General') {
+    res.json(members);
+  } else {
+    const result = members.filter(x => x.team === type);
+    res.json(result);
+  }
+  
+})
+app.get('/meetingHistory', async (req,res) => {
+  const meetingHist = await getMeetingHistory();
+  res.json(meetingHist);
+})
+
+app.get('/MeetingBarData', async (req, res) => {
+  var type = req.query.type;
+  const meetingHist = await getMeetingHistory();
+  const result = meetingHist.filter(x => x.meetingType == type);
+  result.sort(function(a, b) {
+    return parseFloat(a.meetingNumber) - parseFloat(b.meetingNumber);
+  });
+  res.json(result);
+  
+})
+
+app.get('/DonutData', async (req, res) => {
+  var type = req.query.type;
+  var lastMeetingNum = req.query.last;
+  const meetingHist = await getMeetingHistory();
+  const result = meetingHist.filter(x => x.meetingType === type && x.meetingNumber == lastMeetingNum);
+  res.json(result);
+  
+})
+
+app.get('/BarChartHorizData', async (req, res) => {
+  const meetingHist = await getMeetingHistory();
+  //find most recent meeting for each (meeting number sent as parameter)
+  var lastGen = req.query.lastGen;
+  var lastEng = req.query.lastEng;
+  var lastDes = req.query.lastDes;
+  var lastProd = req.query.lastProd;
+  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd)||(x.meetingType === 'Engineering' && x.meetingNumber == lastEng) || (x.meetingType === 'General' && x.meetingNumber == lastGen) || (x.meetingType === 'Design' && x.meetingNumber == lastDes));
+  result.sort(function(a, b) {
+    return parseFloat(a.meetingType) - parseFloat(b.meetingType);
+  });
+  res.json(result);
+  
+})
 app.get('/meetinginfo/:meetingtype', async (req, res) => {
   const meetingType = req.params.meetingType
   if (meetingType == "engineering") {
