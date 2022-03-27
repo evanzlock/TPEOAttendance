@@ -39,8 +39,6 @@ const MemberTable = (props) => {
       filtering: true,
       //turns the row green or red depending on num absences
       rowStyle: rowData => ({backgroundColor: rowData.unexcused  > 3 ? "#ffa9a966" : "#a3ebb366"}),
-      //TODO: KEEP TRACK OF THIS NUMBER (do not hardcode)
-      pageSize: 43,
       tableLayout: 'fixed',
     };
     
