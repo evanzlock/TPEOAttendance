@@ -1,0 +1,46 @@
+.flex-container {
+    display: flex;
+}
+
+.flex-child1 {
+    flex: 1;
+    width: 606px;
+height: 408px;
+left: 322px;
+top: 300px;
+
+background: #FFFFFF;
+box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
+border-radius: 10px;
+margin-left: 20px;
+margin-right: 20px;
+margin-top: 20px;
+margin-bottom: 20px;
+    
+}  
+
+.flex-child2 {
+    margin-left: 20px;
+margin-right: 20px;
+margin-top: 20px;
+margin-bottom: 20px;
+    
+    width: 389px;
+    height: 408px;
+    left: 966px;
+    top: 299px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+} 
+
+.dash {
+    background-color: #E5E5E5;
+}
+
+.table {
+    margin-top: 40px;
+    width: 200px,
+   
+}
