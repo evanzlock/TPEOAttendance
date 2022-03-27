@@ -8,7 +8,6 @@ function App() {
     <div className="App">
        <TeamPage type='Engineering' color = '#FFC4DC'/>
       
-    
       {/*
       //TODO: with navbar update with routing
       <Dashboard/>
