@@ -129,23 +129,26 @@ app.get('/meeting/:meetingtype', async (req, res) => {
 //cancel meeting
 app.put('/cancel', async (req, res) => {
   const body = req.body
-  const meetingType = req.params.meetingType
-  if (meetingType == "engineering") {
-    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
-    const propertyType = "Engineering Meeting Number"
+  var pageId = '';
+  var propertyType = '';
+  const meetingType = req.query.meetingType
+  if (meetingType == "Engineering") {
+    pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    propertyType = "Engineering Meeting Number"
   }
-  else if (meetingType == "general") {
-    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
-    const propertyType = "General Meeting Number"
+  else if (meetingType == "General") {
+    pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    propertyType = "General Meeting Number"
   }
-  else if (meetingType == "product") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
-    const propertyType = "Product Meeting Number"
+  else if (meetingType == "Product") {
+    pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    propertyType = "Product Meeting Number"
   }
-  else if (meetingType == "design") {
-    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
-    const propertyType = "Design Meeting Number"
-  } const response = await notion.pages.update({
+  else if (meetingType == "Design") {
+    pageId = process.env.NOTION_DESIGN_MEETING_INFO;
+    propertyType = "Design Meeting Number"
+  } 
+  const response = await notion.pages.update({
     page_id: pageId,
     properties: {
       'Meeting Type': {
@@ -168,6 +171,24 @@ app.put('/cancel', async (req, res) => {
       }
     }
   });
+
+  //resets everyone's unexcused absences to what it was prior to the meeting (subtract 1)
+  const members = await getMembers();
+  for (var i = 0; i < members.length; i++) {
+    var obj = members[i];
+    if (obj != undefined) {
+      //ensures only general and team-specific meetings counted for attendance
+      if (obj.team == meetingType || meetingType == 'General') {
+          const pageId = obj.pageid;
+          const response = await notion.pages.update({
+            page_id: pageId,
+            properties: {
+              "Unexcused Absences": obj.unexcused - 1
+            },
+          });
+        }
+      }
+    }
   return res.json({
     msg: "Cancelled"
   })
