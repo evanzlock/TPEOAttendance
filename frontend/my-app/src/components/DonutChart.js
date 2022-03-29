@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Doughnut} from 'react-chartjs-2';
 import {Chart as ChartJS} from "chart.js/auto"
+import {Card} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const DonutChart = (props) => {
 
@@ -47,6 +49,7 @@ var data = {
 }
 
 var options = {
+    
     plugins: {
         title: {
             display: true,
@@ -54,14 +57,17 @@ var options = {
         },
         legend: {
              display:false
-        }
+        },
     },
-    maintainAspectRatio: true,
+    maintainAspectRatio: true
+    
 }
 
      return (
          <div>
-           <Doughnut 
+             <Card border="light" align="center">
+              <Card.Body >
+              <Doughnut 
              data={data} 
              options={options}
              plugins={[{
@@ -81,10 +87,16 @@ var options = {
                 } 
               }]} 
             />
-            {/* /TODO: Fix so text is in center of circle */}
-            <h1>{data.datasets[0].data[0]}%</h1>
-            <p>of members were present</p>
-            <p> at {props.type} Meetings</p>
+            <div className='mt-2'>
+                <Card.Title> {data.datasets[0].data[0]}%
+                  </Card.Title>
+                  <Card.Text>  of members were present this month
+                  </Card.Text>
+            </div>  
+              </Card.Body>
+              
+            </Card>
+           
         </div>
      );
    }

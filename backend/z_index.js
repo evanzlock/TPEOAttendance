@@ -76,7 +76,7 @@ app.get('/meetinginfo/:meetingtype', async (req, res) => {
     const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
   }
   else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
   }
   const response = await notion.pages.retrieve({ page_id: pageId });
   return res.json({
@@ -90,22 +90,25 @@ app.get('/meetinginfo/:meetingtype', async (req, res) => {
     }
   })
 });
-app.get('/meeting/:meetingType', async (req, res) => {
+app.get('/meeting/:meetingtype', async (req, res) => {
+  const meetingType = req.params.meetingType
+  var pageId = '';
+  var propertyType = '';
   if (meetingType == "engineering") {
-    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
-    const propertyType = "Engineering Meeting Number"
+    pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    propertyType = "Engineering Meeting Number"
   }
   else if (meetingType == "general") {
-    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
-    const propertyType = "General Meeting Number"
+    pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    propertyType = "General Meeting Number"
   }
   else if (meetingType == "product") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
-    const propertyType = "Product Meeting Number"
+    pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    propertyType = "Product Meeting Number"
   }
   else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
-    const propertyType = "Design Meeting Number"
+    pageId = process.env.NOTION_DESIGN_MEETING_INFO;
+    propertyType = "Design Meeting Number"
   }
   const response = await notion.pages.retrieve({ page_id: pageId });
   var activeMeeting = false;
@@ -140,7 +143,7 @@ app.put('/cancel', async (req, res) => {
     const propertyType = "Product Meeting Number"
   }
   else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   } const response = await notion.pages.update({
     page_id: pageId,
@@ -186,7 +189,7 @@ app.put('/update/:meetingType', async (req, res) => {
     const propertyType = "Product Meeting Number"
   }
   else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   }
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
@@ -239,7 +242,7 @@ app.post('/meeting/:meetingType', async (req, res) => {
     const propertyType = "Product Meeting Number"
   }
   else if (meetingType == "design") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     const propertyType = "Design Meeting Number"
   }
   const meetingNumber = properties[propertyType].number;
@@ -272,6 +275,68 @@ app.post('/meeting/:meetingType', async (req, res) => {
       body
     }
   });
+})
+
+//endpoint called when member checks-in to a meeting (upon clicking submit on the check-in form)
+//name, meeting type, and code sent in from frontend (from the form)
+app.post('/updateCheckin', async (req, res) => {
+  const body = req.body
+  const name= body.name
+  const meetingType = body.type
+  const code= body.code
+  var pageId = "";
+  //check if the meeting type is active at this time
+  if (meetingType == "Engineering") {
+    pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+  }
+  else if (meetingType == "General") {
+    pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+  }
+  else if (meetingType == "Product") {
+    pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  }
+  else if (meetingType == "Design") {
+    pageId = process.env.NOTION_DESIGN_MEETING_INFO;
+  }
+  const response = await notion.pages.retrieve({ page_id: pageId });
+  var activeMeeting = false;
+  // is an empty array if manually deleted otherwise an empty string
+  if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
+    activeMeeting = true;
+  }
+  if (!activeMeeting) {
+    return res.json({msg: 'Meeting is not active'});
+  } 
+  //check if meeting code is correct
+  if (response.properties['Meeting Code'].title[0].plain_text !== code) {
+    return res.json({msg: 'incorrect code'});
+  }
+
+  //if reached here, the code is right & meeting is active -> check if correct team -> update database
+  const members = await getMembers();
+  for (var i = 0; i < members.length; i++) {
+    var obj = members[i];
+    if (obj != undefined) {
+      if (obj.name === name) {
+        //ensures only general and team-specific meetings counted for attendance
+        if (obj.team != meetingType && obj.team != 'General') {
+          return res.json({msg: 'you cannot sign in for this type of meetting based on your team'});
+        } else {
+          const pageId = obj.pageid;
+          const response = await notion.pages.update({
+            page_id: pageId,
+            properties: {
+              "Total Meetings Attended": obj.total + 1,
+              "Unexcused Absences": obj.unexcused - 1
+            },
+          });
+          return res.json({msg: 'success'});
+        }
+      }
+    }
+  }
+
+
 })
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 

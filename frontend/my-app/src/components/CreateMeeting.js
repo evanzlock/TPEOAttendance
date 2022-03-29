@@ -6,11 +6,6 @@ console.log(url);
 
 export default function CreateMeeting(props) {
     var style = {
-        /*position: 'absolute',
-        width: '396px',
-        height: '71px',
-        left: '320px',
-        top: '165px', */
         background: props.color,
         boxShadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)',
         borderRadius: '10px',
@@ -20,7 +15,8 @@ export default function CreateMeeting(props) {
         fontSize: '24px',
         lineHeight: '29px',
         color: '#000000',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        margin: '20px'
     
     } 
     const [meetingInfo, setInfo] = useState({
