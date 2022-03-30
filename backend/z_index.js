@@ -248,25 +248,31 @@ app.put('/update/:meetingType', async (req, res) => {
   })
 });
 //endpoint for receiving meeting info and updating database with it
-app.post('/meeting/:meetingType', async (req, res) => {
+app.post('/meeting', async (req, res) => {
   const body = req.body
-  if (meetingType == "engineering") {
-    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
-    const propertyType = "Engineering Meeting Number"
+  var meetingType = body.type;
+  var pageId = '';
+  var propertyType = '';
+  if (meetingType == "Engineering") {
+    pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    propertyType = "Engineering Meeting Number"
   }
-  else if (meetingType == "general") {
-    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
-    const propertyType = "General Meeting Number"
+  else if (meetingType == "General") {
+    pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    propertyType = "General Meeting Number"
   }
-  else if (meetingType == "product") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
-    const propertyType = "Product Meeting Number"
+  else if (meetingType == "Product") {
+    pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    propertyType = "Product Meeting Number"
   }
-  else if (meetingType == "design") {
-    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
-    const propertyType = "Design Meeting Number"
+  else if (meetingType == "Design") {
+    pageId = process.env.NOTION_DESIGN_MEETING_INFO;
+    propertyType = "Design Meeting Number"
   }
-  const meetingNumber = properties[propertyType].number;
+  //const meetingNumber = properties[propertyType].number;
+  console.log(pageId);
+  const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
+  let meetingNumber = parseInt(retrieveInfo.properties[propertyType].number)
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
@@ -285,11 +291,29 @@ app.post('/meeting/:meetingType', async (req, res) => {
       'End Time': {
         number: body.startTime
       },
-      propertyType: {
+      [propertyType]: {
         number: meetingNumber + 1
       }
     },
   });
+  //upon creating the meeting, sets everyone who should be present to this meeting absent
+  //(they are changed to present when they check in- handled elsewhere)
+  const members = await getMembers();
+  for (var i = 0; i < members.length; i++) {
+    var obj = members[i];
+    if (obj != undefined) {
+      if (obj.team == meetingType || obj.team == 'General') {
+        const pageId = obj.pageid;
+        const response = await notion.pages.update({
+        page_id: pageId,
+        properties: {
+          "Unexcused Absences": obj.unexcused + 1
+        },
+          });
+        }
+      }
+        
+  }
   return res.json({
     msg: "Success",
     data: {
@@ -377,7 +401,7 @@ app.post('/clear', async (req, res) => {
         },
           });
         }
-      }
+  }
   return res.json({
     msg: "Cleared"
   })
