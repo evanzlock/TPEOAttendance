@@ -10,15 +10,10 @@ ChartJS.register(
 
 const BarChartHorizontalDashboard = () => {
     const [chart, setChart] = useState([]);
-    //hardcoded for now
-    var lastGen = 2;
-    var lastEng = 2;
-    var lastDes = 2;
-    var lastProd = 2;
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch("http://localhost:5000/BarChartHorizData?lastGen="+lastGen+"&lastEng="+lastEng+"&lastDes="+lastDes+"&lastProd="+lastProd, {
+        await fetch("http://localhost:5000/BarChartHorizData", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -42,22 +42,38 @@ app.get('/MeetingBarData', async (req, res) => {
 })
 
 app.get('/DonutData', async (req, res) => {
-  var type = req.query.type;
-  var lastMeetingNum = req.query.last;
+  var meetingType = req.query.type;
+  if (meetingType == "Engineering") {
+    pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+  }
+  else if (meetingType == "General") {
+    pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+  }
+  else if (meetingType == "Product") {
+    pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+  }
+  else if (meetingType == "Design") {
+    pageId = process.env.NOTION_DESIGN_MEETING_INFO;
+  }
+  const response = await notion.pages.retrieve({ page_id: pageId });
+  var lastMeetingNum = response.properties[meetingType + " Meeting Number"];
   const meetingHist = await getMeetingHistory();
-  const result = meetingHist.filter(x => x.meetingType === type && x.meetingNumber == lastMeetingNum);
+  const result = meetingHist.filter(x => x.meetingType === meetingType && x.meetingNumber == lastMeetingNum.number);
   res.json(result);
-  
 })
 
 app.get('/BarChartHorizData', async (req, res) => {
   const meetingHist = await getMeetingHistory();
-  //find most recent meeting for each (meeting number sent as parameter)
-  var lastGen = req.query.lastGen;
-  var lastEng = req.query.lastEng;
-  var lastDes = req.query.lastDes;
-  var lastProd = req.query.lastProd;
-  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd)||(x.meetingType === 'Engineering' && x.meetingNumber == lastEng) || (x.meetingType === 'General' && x.meetingNumber == lastGen) || (x.meetingType === 'Design' && x.meetingNumber == lastDes));
+  //find most recent meeting for each
+  const responseG = await notion.pages.retrieve({ page_id: process.env.NOTION_GENERAL_MEETING_INFO });
+  var lastGen = responseG.properties["General Meeting Number"];
+  const responseD = await notion.pages.retrieve({ page_id: process.env.NOTION_DESIGN_MEETING_INFO });
+  var lastDes = responseD.properties["Design Meeting Number"];
+  const responseP = await notion.pages.retrieve({ page_id: process.env.NOTION_PRODUCT_MEETING_INFO });
+  var lastProd = responseP.properties["Product Meeting Number"];
+  const responseE = await notion.pages.retrieve({ page_id: process.env.NOTION_ENGINEERING_MEETING_INFO });
+  var lastEng = responseE.properties["Engineering Meeting Number"];
+  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd.number)||(x.meetingType === 'Engineering' && x.meetingNumber == lastEng.number) || (x.meetingType === 'General' && x.meetingNumber == lastGen.number) || (x.meetingType === 'Design' && x.meetingNumber == lastDes.number));
   result.sort(function(a, b) {
     return parseFloat(a.meetingType) - parseFloat(b.meetingType);
   });
@@ -148,6 +164,8 @@ app.put('/cancel', async (req, res) => {
     pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     propertyType = "Design Meeting Number"
   } 
+  const resp = await notion.pages.retrieve({ page_id: pageId });
+  var meetingNum = resp.properties[meetingType + " Meeting Number"];
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
@@ -189,6 +207,21 @@ app.put('/cancel', async (req, res) => {
         }
       }
     }
+
+    //deletes this meeting from meetingHistory database
+    const meetingHistory = await getMeetingHistory();
+          for (var j = 0; j < meetingHistory.length; j++) {
+            var entry = meetingHistory[j];
+            if (entry.meetingType == meetingType && entry.meetingNumber == meetingNum.number) {
+              //found the entry, delete it
+              const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN});
+              const response = await notionMeeting.pages.update({
+                 page_id: entry.pageid,
+                //deletes the row
+                archived: true
+            });
+          }
+      }
   return res.json({
     msg: "Cancelled"
   })
@@ -392,7 +425,7 @@ app.post('/updateCheckin', async (req, res) => {
               "Unexcused Absences": obj.unexcused - 1
             },
           });
-          
+
           //update meeting history database
           const meetingHistory = await getMeetingHistory();
           for (var j = 0; j < meetingHistory.length; j++) {
