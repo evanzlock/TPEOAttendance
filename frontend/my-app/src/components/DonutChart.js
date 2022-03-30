@@ -7,13 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const DonutChart = (props) => {
 
     //should get this from automated meeting number, hardcoded for now
-    const lastGenMeetingNum = 2;
+    const lastMeetingNum = 2;
 
 
     const [chart, setChart] = useState();
 
     const fetchData = async () => {
-        await fetch("http://localhost:5000/DonutData?type=" + props.type + "&last=" + lastGenMeetingNum, {
+        await fetch("http://localhost:5000/DonutData?type=" + props.type + "&last=" + lastMeetingNum, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

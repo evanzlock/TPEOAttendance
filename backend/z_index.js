@@ -193,6 +193,7 @@ app.put('/cancel', async (req, res) => {
     msg: "Cancelled"
   })
 });
+
 //call update members data when timer ends
 app.put('/update/:meetingType', async (req, res) => {
   const body = req.body
@@ -248,7 +249,7 @@ app.put('/update/:meetingType', async (req, res) => {
   })
 });
 
-//endpoint for receiving meeting info and updating database with it
+//endpoint for receiving meeting info and updating database with it- essentially creates the meeting
 app.post('/meeting', async (req, res) => {
   const body = req.body
   var meetingType = body.type;
@@ -270,8 +271,6 @@ app.post('/meeting', async (req, res) => {
     pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     propertyType = "Design Meeting Number"
   }
-  //const meetingNumber = properties[propertyType].number;
-  console.log(pageId);
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
   let meetingNumber = parseInt(retrieveInfo.properties[propertyType].number)
   const response = await notion.pages.update({
@@ -315,6 +314,20 @@ app.post('/meeting', async (req, res) => {
       }
         
   }
+
+  //create an entry for meetingHistory
+  const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN});
+  const numMembers = await getNumMembers(meetingType);
+  notionMeeting.pages.create({
+    parent: {database_id: process.env.NOTION_MEETINGHISTORY_ID},
+    properties: {
+      "title": [{"text": {"content": meetingType}}],
+      "Meeting #": meetingNumber + 1,
+      "Attended": 0,
+      "# Unexcused Absences": numMembers,
+    }
+  });
+
   return res.json({
     msg: "Success",
     data: {
@@ -331,6 +344,7 @@ app.post('/updateCheckin', async (req, res) => {
   const meetingType = body.type
   const code= body.code
   var pageId = "";
+  var meetingNum = '';
   //check if the meeting type is active at this time
   if (meetingType == "Engineering") {
     pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
@@ -348,6 +362,7 @@ app.post('/updateCheckin', async (req, res) => {
   var activeMeeting = false;
   // is an empty array if manually deleted otherwise an empty string
   if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
+    meetingNum = response.properties[meetingType + " Meeting Number"];
     activeMeeting = true;
   }
   if (!activeMeeting) {
@@ -368,6 +383,7 @@ app.post('/updateCheckin', async (req, res) => {
         if (obj.team != meetingType && obj.team != 'General') {
           return res.json({msg: 'you cannot sign in for this type of meetting based on your team'});
         } else {
+          //update member attendance database
           const pageId = obj.pageid;
           const response = await notion.pages.update({
             page_id: pageId,
@@ -376,6 +392,23 @@ app.post('/updateCheckin', async (req, res) => {
               "Unexcused Absences": obj.unexcused - 1
             },
           });
+          
+          //update meeting history database
+          const meetingHistory = await getMeetingHistory();
+          for (var j = 0; j < meetingHistory.length; j++) {
+            var entry = meetingHistory[j];
+            if (entry.meetingType == meetingType && entry.meetingNumber == meetingNum.number) {
+              //found the entry, update it
+              const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN});
+              const response = await notionMeeting.pages.update({
+                page_id: entry.pageid,
+                properties: {
+                  "Attended": entry.numAttended + 1,
+                  "# Unexcused Absences": entry.numAbsent - 1
+                },
+              });
+            }
+          }
           return res.json({msg: 'success'});
         }
       }
@@ -445,8 +478,6 @@ app.post('/submitExcusedAbsence', async (req, res) => {
 
 })
 
-
-
 //clears the present/absences data on the members overview database
 //primarily for debugging purposes
 app.post('/clear', async (req, res) => {
@@ -472,6 +503,23 @@ app.post('/clear', async (req, res) => {
 })
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
+
+//gets the number of members in each team
+const getNumMembers = async (type) => {
+  const members = await getMembers();
+  if (type === 'General') {
+    return members.length;
+  } else {
+    var result = 0;
+    for (var i = 0; i < members.length; i++) {
+      var obj = members[i];
+      if (obj.team == type) {
+        result++;
+      }
+    }
+    return result;
+  }
+}
 
 const updateMembersData = async (meetingType,  meetingNumber) => {
 
