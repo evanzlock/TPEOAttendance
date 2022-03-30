@@ -247,6 +247,7 @@ app.put('/update/:meetingType', async (req, res) => {
     msg: "Meeting Ended and entries updated"
   })
 });
+
 //endpoint for receiving meeting info and updating database with it
 app.post('/meeting', async (req, res) => {
   const body = req.body
@@ -380,9 +381,71 @@ app.post('/updateCheckin', async (req, res) => {
       }
     }
   }
+})
+
+//endpoint called when member submits excused absence form
+//name, meeting type, and reason for absence sent in from frontend (from the form)
+app.post('/submitExcusedAbsence', async (req, res) => {
+  //updates general database with +1 excused absence and -1 unexcused absence
+  var body = req.body;
+  var name = body.name;
+  var meetingType = body.type;
+  var reason = body.reason;
+  const members = await getMembers();
+  for (var i = 0; i < members.length; i++) {
+    var obj = members[i];
+    if (obj != undefined) {
+      if (obj.name === name) {
+        //ensures only general and team-specific meetings counted for attendance
+        if (obj.team != meetingType && obj.team != 'General') {
+          return res.json({msg: 'you cannot submit an absence from for this type of meetting based on your team'});
+        } else {
+          const pageId = obj.pageid;
+          const response = await notion.pages.update({
+            page_id: pageId,
+            properties: {
+              "Excused Absences": obj.excused + 1,
+              "Unexcused Absences": obj.unexcused - 1
+            },
+          });
+          //found the member to update- exit loop
+          i = members.length;
+        }
+      }
+    }
+  }
+
+  //updates the excused absences database with the new entry
+  const notionMeeting = new Client({ auth: process.env.NOTION_TOKEN_ABSENCES});
+  notionMeeting.pages.create({
+    parent: {database_id: process.env.NOTION_DATABASE_ABSENCES},
+    properties: {
+      Name: {
+        "title": [{"text": {"content": name}}],
+      },
+      "Type of Meeting": {
+        rich_text: [{
+          text: {
+            content: meetingType
+          }
+        }]
+      },
+      "Reason For Missing Meeting": {
+        rich_text: [{
+          text: {
+            content: reason
+          }
+        }]
+      }
+    }
+  });
+
+  return res.json({msg: "Success"});
 
 
 })
+
+
 
 //clears the present/absences data on the members overview database
 //primarily for debugging purposes
