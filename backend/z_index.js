@@ -359,6 +359,30 @@ app.post('/updateCheckin', async (req, res) => {
 
 
 })
+
+//clears the present/absences data on the members overview database
+//primarily for debugging purposes
+app.post('/clear', async (req, res) => {
+  const members = await getMembers();
+  for (var i = 0; i < members.length; i++) {
+    var obj = members[i];
+    if (obj != undefined) {
+        const pageId = obj.pageid;
+        const response = await notion.pages.update({
+        page_id: pageId,
+        properties: {
+            "Unexcused Absences": 0,
+            "Total Meetings Attended": 0,
+            "Excused Absences": 0
+        },
+          });
+        }
+      }
+  return res.json({
+    msg: "Cleared"
+  })
+
+})
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
 
