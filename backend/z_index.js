@@ -106,6 +106,7 @@ app.get('/meetinginfo/:meetingtype', async (req, res) => {
     }
   })
 });
+
 app.get('/meeting/:meetingtype', async (req, res) => {
   const meetingType = req.params.meetingType
   var pageId = '';
@@ -231,25 +232,27 @@ app.put('/cancel', async (req, res) => {
 app.put('/update/:meetingType', async (req, res) => {
   const body = req.body
   const meetingType = req.params.meetingType
+  var propertyType = '';
+  var pageId = '';
   if (meetingType == "engineering") {
-    const pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
-    const propertyType = "Engineering Meeting Number"
+    pageId = process.env.NOTION_ENGINEERING_MEETING_INFO;
+    propertyType = "Engineering Meeting Number"
   }
   else if (meetingType == "general") {
-    const pageId = process.env.NOTION_GENERAL_MEETING_INFO;
-    const propertyType = "General Meeting Number"
+    pageId = process.env.NOTION_GENERAL_MEETING_INFO;
+    propertyType = "General Meeting Number"
   }
   else if (meetingType == "product") {
-    const pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
-    const propertyType = "Product Meeting Number"
+    pageId = process.env.NOTION_PRODUCT_MEETING_INFO;
+    propertyType = "Product Meeting Number"
   }
   else if (meetingType == "design") {
-    const pageId = process.env.NOTION_DESIGN_MEETING_INFO;
-    const propertyType = "Design Meeting Number"
+    pageId = process.env.NOTION_DESIGN_MEETING_INFO;
+    propertyType = "Design Meeting Number"
   }
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
-  let meetingNumber = parseInt(retrieveInfo.properties['General Meeting Number'].number)
-  let newMeetingNumber = parseInt(retrieveInfo.properties['General Meeting Number'].number + 1)
+  let meetingNumber = parseInt(retrieveInfo.properties[propertyType].number)
+  let newMeetingNumber = meetingNumber + 1;
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
@@ -276,7 +279,6 @@ app.put('/update/:meetingType', async (req, res) => {
       }
     }
   });
-  await updateMembersData();
   return res.json({
     msg: "Meeting Ended and entries updated"
   })
@@ -552,83 +554,4 @@ const getNumMembers = async (type) => {
     }
     return result;
   }
-}
-
-const updateMembersData = async (meetingType,  meetingNumber) => {
-
-  const absences = await getAbsenceForms();
-  const present = await getForms();
-
-  constAbsencesSet = new Set();
-  if (absences) {
-    for (var i = 0; i < absences.length; i++) {
-      var obj = absences[i];
-      if (obj != undefined) {
-        constAbsencesSet.add(obj.name);
-      }
-    }
-  }
-  constPresentSet = new Set();
-  if (present) {
-    for (var i = 0; i < present.length; i++) {
-      var obj = present[i];
-      if (obj != undefined) {
-        constPresentSet.add(obj.name);
-        attended++;
-      }
-    }
-  }
-
-  const members = await getMembers();
-  for (var i = 0; i < members.length; i++) {
-    var obj = members[i];
-    if (obj != undefined) {
-      //ensures only general and team-specific meetings counted for attendance
-      if (meetingType === "General" || obj.team === meetingType) {
-        if (constPresentSet.has(obj.name)) {
-          //function that updates members data base with 1 more meeting attended
-            const pageId = obj.pageid;
-            const response = await notion.pages.update({
-              page_id: pageId,
-              properties: {
-                "Total Meetings Attended": obj.total + 1
-              },
-            });
-        }
-        else if (constAbsencesSet.has(obj.name)) {
-          //console.log("excused " + obj.name);
-          //function that updates members data base with 1 more excused absence
-            const pageId = obj.pageid;
-            const response = await notion.pages.update({
-              page_id: pageId,
-              properties: {
-                "Excused Absences": obj.excused + 1
-              },
-            });
-        } else {
-          //function that updates members data base with 1 more unexcused absence
-            const pageId = obj.pageid;
-            const response = await notion.pages.update({
-              page_id: pageId,
-              properties: {
-                "Unexcused Absences": obj.unexcused + 1
-              },
-            });
-          unexcused++;
-        }
-      }
-    }
-  }
-  //add this meeting info to Meeting History Database
-  const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN});
-  notionMeeting.pages.create({
-    parent: {database_id: process.env.NOTION_MEETINGHISTORY_ID},
-    properties: {
-      "title": [{"text": {"content": meetingType}}],
-      "Meeting #": meetingNumber,
-      "Attended": attended,
-      "# Unexcused Absences": unexcused,
-    }
-  });
-  return {type: meetingType, unexcused: unexcused, attended: attended};
 }
