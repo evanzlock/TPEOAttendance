@@ -39,7 +39,6 @@ module.exports = async function getMembers() {
     const members = results.map(page => {
         //console.log(page);
         //console.log(page.properties.Team.multi_select[0].name)
-
         return {
             name: page.properties.Name.title[0].text.content,
             team: page.properties.Team.multi_select[0].name,
@@ -48,7 +47,8 @@ module.exports = async function getMembers() {
             excused: page.properties['Excused Absences'].number,
             unexcused: page.properties['Unexcused Absences'].number,
             total: page.properties['Total Meetings Attended'].number,
-            pageid: page.id
+            pageid: page.id,
+            checkedin: page.properties['Currently Checked-in'].checkbox
         }
     })
     return members
