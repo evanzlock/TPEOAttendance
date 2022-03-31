@@ -401,11 +401,11 @@ app.post('/updateCheckin', async (req, res) => {
     activeMeeting = true;
   }
   if (!activeMeeting) {
-    return res.json({msg: 'Meeting is not active'});
+    return res.json({msg: 'Meeting is not currently active.'});
   } 
   //check if meeting code is correct
   if (response.properties['Meeting Code'].title[0].plain_text !== code) {
-    return res.json({msg: 'incorrect code'});
+    return res.json({msg: 'Incorrect code'});
   }
 
   //if reached here, the code is right & meeting is active -> check if correct team -> update database
@@ -416,7 +416,7 @@ app.post('/updateCheckin', async (req, res) => {
       if (obj.name === name) {
         //ensures only general and team-specific meetings counted for attendance
         if (obj.team != meetingType && obj.team != 'General') {
-          return res.json({msg: 'you cannot sign in for this type of meetting based on your team'});
+          return res.json({msg: 'You cannot sign in for this type of meetting based on your team.'});
         } else {
           //update member attendance database
           const pageId = obj.pageid;
@@ -428,27 +428,15 @@ app.post('/updateCheckin', async (req, res) => {
             },
           });
 
-          //update meeting history database
-          const meetingHistory = await getMeetingHistory();
-          for (var j = 0; j < meetingHistory.length; j++) {
-            var entry = meetingHistory[j];
-            if (entry.meetingType == meetingType && entry.meetingNumber == meetingNum.number) {
-              //found the entry, update it
-              const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN});
-              const response = await notionMeeting.pages.update({
-                page_id: entry.pageid,
-                properties: {
-                  "Attended": entry.numAttended + 1,
-                  "# Unexcused Absences": entry.numAbsent - 1
-                },
-              });
-            }
-          }
-          return res.json({msg: 'success'});
+          //update meeting history database- no need to await (will speed up checkin time for user)
+          updateMeetingHistory(meetingType, meetingNum);
+          return res.json({msg: 'Success! You are checked in.'});
         }
       }
     }
   }
+  //if reached here, looked through whole database and no names matched -> name is wrong
+  return res.json({msg: 'No member found with the name inputted'});
 })
 
 //endpoint called when member submits excused absence form
@@ -554,4 +542,22 @@ const getNumMembers = async (type) => {
     }
     return result;
   }
+}
+
+const updateMeetingHistory = async (meetingType, meetingNum) => {
+  const meetingHistory = await getMeetingHistory();
+          for (var j = 0; j < meetingHistory.length; j++) {
+            var entry = meetingHistory[j];
+            if (entry.meetingType == meetingType && entry.meetingNumber == meetingNum.number) {
+              //found the entry, update it
+              const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN});
+              const response = await notionMeeting.pages.update({
+                page_id: entry.pageid,
+                properties: {
+                  "Attended": entry.numAttended + 1,
+                  "# Unexcused Absences": entry.numAbsent - 1
+                },
+              });
+            }
+          }
 }
