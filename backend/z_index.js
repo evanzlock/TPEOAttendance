@@ -202,7 +202,8 @@ app.put('/cancel', async (req, res) => {
           const response = await notion.pages.update({
             page_id: pageId,
             properties: {
-              "Unexcused Absences": obj.unexcused - 1
+              "Unexcused Absences": obj.unexcused - 1,
+              "Currently Checked-in": false
             },
           });
         }
@@ -228,7 +229,7 @@ app.put('/cancel', async (req, res) => {
   })
 });
 
-//call update members data when timer ends
+//call when timer ends
 app.put('/update/:meetingType', async (req, res) => {
   const body = req.body
   const meetingType = req.params.meetingType
@@ -279,6 +280,22 @@ app.put('/update/:meetingType', async (req, res) => {
       }
     }
   });
+  const members = await getMembers();
+  for (var i = 0; i < members.length; i++) {
+    var obj = members[i];
+    if (obj != undefined) {
+      if (obj.team == meetingType || obj.team == 'General') {
+          //update member attendance database
+          const pageId = obj.pageid;
+          const response = await notion.pages.update({
+            page_id: pageId,
+            properties: {
+              "Currently Checked-in": false
+            },
+          });
+        }
+      }
+    }
   return res.json({
     msg: "Meeting Ended and entries updated"
   })
@@ -342,7 +359,8 @@ app.post('/meeting', async (req, res) => {
         const response = await notion.pages.update({
         page_id: pageId,
         properties: {
-          "Unexcused Absences": obj.unexcused + 1
+          "Unexcused Absences": obj.unexcused + 1,
+          "Currently Checked-in": false
         },
           });
         }
@@ -417,6 +435,8 @@ app.post('/updateCheckin', async (req, res) => {
         //ensures only general and team-specific meetings counted for attendance
         if (obj.team != meetingType && obj.team != 'General') {
           return res.json({msg: 'You cannot sign in for this type of meetting based on your team.'});
+        } else if (obj.checkedin == true) {
+          return res.json({msg: 'You have already signed in for this meeting.'});
         } else {
           //update member attendance database
           const pageId = obj.pageid;
@@ -424,7 +444,8 @@ app.post('/updateCheckin', async (req, res) => {
             page_id: pageId,
             properties: {
               "Total Meetings Attended": obj.total + 1,
-              "Unexcused Absences": obj.unexcused - 1
+              "Unexcused Absences": obj.unexcused - 1,
+              "Currently Checked-in": true
             },
           });
 
@@ -514,7 +535,8 @@ app.post('/clear', async (req, res) => {
         properties: {
             "Unexcused Absences": 0,
             "Total Meetings Attended": 0,
-            "Excused Absences": 0
+            "Excused Absences": 0,
+            "Currently Checked-in": false
         },
           });
         }
