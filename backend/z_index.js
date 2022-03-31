@@ -75,7 +75,7 @@ app.get('/BarChartHorizData', async (req, res) => {
   var lastEng = responseE.properties["Engineering Meeting Number"];
   var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd.number)||(x.meetingType === 'Engineering' && x.meetingNumber == lastEng.number) || (x.meetingType === 'General' && x.meetingNumber == lastGen.number) || (x.meetingType === 'Design' && x.meetingNumber == lastDes.number));
   result.sort(function(a, b) {
-    return parseFloat(a.meetingType) - parseFloat(b.meetingType);
+    return a.meetingType.localeCompare(b.meetingType);
   });
   res.json(result);
   
