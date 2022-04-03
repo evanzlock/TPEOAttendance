@@ -63,7 +63,19 @@ var options = {
     maintainAspectRatio: false,
     scales: {
         y: {
-            beginAtZero: true
+            beginAtZero: true,
+            title: {
+                display: true,
+                text: "Percentt Attended"
+
+            }
+        },
+        x: {
+            title: {
+                display: true,
+                text: "Meeting Number"
+
+            }
         }
     }
 }

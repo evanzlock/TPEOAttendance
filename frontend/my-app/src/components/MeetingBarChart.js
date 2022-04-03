@@ -42,7 +42,7 @@ var data = {
             backgroundColor: [
                 props.color,
             ],
-            borderWidth: 1
+            borderWidth: 0.5
         }]
 
 }
@@ -66,8 +66,18 @@ var options = {
     scales: {
         y: {
             beginAtZero: true,
+            title: {
+                display: true,
+                text: "Percentt Attended"
+
+            }
         },
         x: {
+            title: {
+                display: true,
+                text: "Meeting Number"
+
+            },
             grid: {
                 lineWidth: 0
             }

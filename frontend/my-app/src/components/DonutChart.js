@@ -16,6 +16,7 @@ const DonutChart = (props) => {
         }).then((response) => {
             response.json().then((json) => {
                 setChart(json[0].attendancePercent);
+                return (json[0].attendancePercent);
             })
         }).catch(error => {
             console.log(error);
@@ -33,12 +34,12 @@ var data = {
             data: [chart, 100-chart],
             backgroundColor: [
                 props.color,
-                '#FFFFFF',
+                '#E5E5E5',
             ],
             borderColor: [
                 '#0'
             ],
-            borderWidth: 1
+            borderWidth: 0.5
         }]
 
 }
@@ -54,8 +55,8 @@ var options = {
              display:false
         },
     },
-    maintainAspectRatio: true
-    
+    maintainAspectRatio: true,
+    cutout: "50%"
 }
 
      return (
@@ -66,7 +67,7 @@ var options = {
              data={data} 
              options={options}
              plugins={[{
-                beforeDraw: function(chart) {
+                beforeDraw: async function(chart) {
                  var width = chart.width,
                      height = chart.height,
                      ctx = chart.ctx;
@@ -83,7 +84,7 @@ var options = {
               }]} 
             />
             <div className='mt-2'>
-                <Card.Title> {data.datasets[0].data[0]}%
+                <Card.Title> {Math.round(data.datasets[0].data[0])}%
                   </Card.Title>
                   <Card.Text>  of members were present this month
                   </Card.Text>
