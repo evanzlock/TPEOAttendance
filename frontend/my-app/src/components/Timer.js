@@ -9,12 +9,11 @@ export default function Timer(props) {
         minute: String(Math.floor(props.time / 60000)),
         counter: Math.floor(props.time / 1000)
     })
-    const [isActive, setIsActive] = useState(false);
     const [endTimer, stopTimer] = useState(false);
     useEffect(() => {
         let intervalId;
         //allow timer to go to 0
-        if (isActive && time.counter > -2) {
+        if (time.counter > -2) {
             if (time.counter === -2) {
                 stopTimer(true);
             }
@@ -33,7 +32,7 @@ export default function Timer(props) {
             }, 1000)
         }
         return () => clearInterval(intervalId);
-    }, [isActive, time.counter])
+    }, [time.counter])
     //put request to update members data when timer ends/meeting ends
     // useEffect(() => {
     //     fetch(`${URL}/update`, {
@@ -45,21 +44,12 @@ export default function Timer(props) {
     //         .then(response => response.text())
     //         .then(text => console.log(text))
     // }, [endTimer])
-    function handleClick(e) {
-        e.preventDefault();
-        setIsActive(!isActive);
-    }
     return (
         <div className="container">
             <div className="time">
                 <span className="minute">{time.minute}</span>
                 <span>:</span>
                 <span className="second">{time.second}</span>
-            </div>
-            <div className="buttons">
-                <button onClick={handleClick} className="start">
-                    {isActive ? "Pause" : "Start"}
-                </button>
             </div>
         </div>
     )
