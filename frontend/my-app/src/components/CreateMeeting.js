@@ -146,7 +146,7 @@ export default function CreateMeeting(props) {
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
             {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
-            {!toggleInfo && isActive && <h1>There is already a meeting in progress.</h1>}
+            {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
             {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color = {props.color}></Timer>}
 
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
