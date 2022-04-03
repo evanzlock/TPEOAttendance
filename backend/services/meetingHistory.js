@@ -23,8 +23,9 @@ module.exports = async function getMeetingHistory() {
             meetingType: page.properties.MeetingType.title[0].text.content,
             meetingNumber: page.properties['Meeting #'].number,
             numAttended: page.properties['Attended'].number,
-            numAttended: page.properties['# Unexcused Absences'].number,
-            attendancePercent: page.properties['%'].formula.number
+            numAbsent: page.properties['# Unexcused Absences'].number,
+            attendancePercent: page.properties['%'].formula.number,
+            pageid: page.id
         }
     })
     return history

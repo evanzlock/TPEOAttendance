@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Doughnut} from 'react-chartjs-2';
 import {Chart as ChartJS} from "chart.js/auto"
+import {Card} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const DonutChart = (props) => {
-
-    //should get this from automated meeting number, hardcoded for now
-    const lastGenMeetingNum = 2;
-
-
     const [chart, setChart] = useState();
 
     const fetchData = async () => {
-        await fetch("http://localhost:5000/DonutData?type=" + props.type + "&last=" + lastGenMeetingNum, {
+        await fetch("http://localhost:5000/DonutData?type=" + props.type, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,6 +16,7 @@ const DonutChart = (props) => {
         }).then((response) => {
             response.json().then((json) => {
                 setChart(json[0].attendancePercent);
+                return (json[0].attendancePercent);
             })
         }).catch(error => {
             console.log(error);
@@ -36,17 +34,18 @@ var data = {
             data: [chart, 100-chart],
             backgroundColor: [
                 props.color,
-                '#FFFFFF',
+                '#E5E5E5',
             ],
             borderColor: [
                 '#0'
             ],
-            borderWidth: 1
+            borderWidth: 0.5
         }]
 
 }
 
 var options = {
+    
     plugins: {
         title: {
             display: true,
@@ -54,18 +53,21 @@ var options = {
         },
         legend: {
              display:false
-        }
+        },
     },
     maintainAspectRatio: true,
+    cutout: "50%"
 }
 
      return (
          <div>
-           <Doughnut 
+             <Card border="light" align="center">
+              <Card.Body >
+              <Doughnut 
              data={data} 
              options={options}
              plugins={[{
-                beforeDraw: function(chart) {
+                beforeDraw: async function(chart) {
                  var width = chart.width,
                      height = chart.height,
                      ctx = chart.ctx;
@@ -81,10 +83,16 @@ var options = {
                 } 
               }]} 
             />
-            {/* /TODO: Fix so text is in center of circle */}
-            <h1>{data.datasets[0].data[0]}%</h1>
-            <p>of members were present</p>
-            <p> at {props.type} Meetings</p>
+            <div className='mt-2'>
+                <Card.Title> {Math.round(data.datasets[0].data[0])}%
+                  </Card.Title>
+                  <Card.Text>  of members were present this month
+                  </Card.Text>
+            </div>  
+              </Card.Body>
+              
+            </Card>
+           
         </div>
      );
    }

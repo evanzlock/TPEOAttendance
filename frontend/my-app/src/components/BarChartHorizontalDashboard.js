@@ -1,28 +1,26 @@
 import React, {useState, useEffect} from 'react'
-import {Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement} from 'chart.js'
-import {Line} from 'react-chartjs-2'
+import {Chart as ChartJS, BarElement, CategoryScale, LinearScale} from 'chart.js'
+import {Bar} from 'react-chartjs-2'
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    LineElement,
-    PointElement
+    BarElement
 )
 
-
-const LineChartDashboard = () => {
-
+const BarChartHorizontalDashboard = () => {
     const [chart, setChart] = useState([]);
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/MeetingBarData?type=General', {
+        await fetch("http://localhost:5000/BarChartHorizData", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
             response.json().then((json) => {
+                console.log(json);
                 setChart(json);
             })
         }).catch(error => {
@@ -35,15 +33,15 @@ const LineChartDashboard = () => {
     }, [])
 
 var data = {
-    labels: chart.map(x => x.meetingNumber),
+    labels: ["Design", "Engineering", "General", "Product"],
         datasets: [{
-            label: 'Percent Attended',
+            label: 'This Month',
             data: chart.map(x => x.attendancePercent),
             backgroundColor: [
-                '#FF6900'
-            ],
-            borderColor: [
-                '#FF6900'
+                '#E6CDFF',
+                '#FFC4DC',
+                '#FFD5B8',
+                '#B2D1FF',
             ],
             borderWidth: 1
         }]
@@ -54,7 +52,7 @@ var options = {
     plugins: {
         title: {
             display: true,
-            text: 'Attendance Overview'
+            text: 'This Month'
         },
         legend: {
              display:false
@@ -63,13 +61,23 @@ var options = {
     maintainAspectRatio: false,
     scales: {
         y: {
-            beginAtZero: true
+            beginAtZero: true,
+            grid: {
+                lineWidth: 0
+            },
+        },
+        x: {
+            grid: {
+                lineWidth: 0
+            },
+            display: false
         }
-    }
+    },
+    indexAxis: 'y'
 }
   return (
     <div>
-        <Line 
+        <Bar 
             data={data}
             height={400}
             options={options}
@@ -79,4 +87,4 @@ var options = {
   )
 }
 
-export default LineChartDashboard
+export default BarChartHorizontalDashboard;

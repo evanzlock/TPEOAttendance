@@ -1,21 +1,22 @@
 import React, {useState, useEffect} from 'react'
-import {Chart as ChartJS, BarElement, CategoryScale, LinearScale} from 'chart.js'
-import {Bar} from 'react-chartjs-2'
+import {Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement} from 'chart.js'
+import {Line} from 'react-chartjs-2'
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement
+    LineElement,
+    PointElement
 )
 
 
-const MeetingBarChart = (props) => {
+const LineChartDashboard = () => {
 
     const [chart, setChart] = useState([]);
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/MeetingBarData?type=' + props.type, {
+        await fetch('http://localhost:5000/MeetingBarData?type=General', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,11 +37,13 @@ const MeetingBarChart = (props) => {
 var data = {
     labels: chart.map(x => x.meetingNumber),
         datasets: [{
-
-            label: 'Attendance Overview',
+            label: 'Percent Attended',
             data: chart.map(x => x.attendancePercent),
             backgroundColor: [
-                props.color,
+                '#FF6900'
+            ],
+            borderColor: [
+                '#FF6900'
             ],
             borderWidth: 1
         }]
@@ -51,32 +54,34 @@ var options = {
     plugins: {
         title: {
             display: true,
-            text: "Numerical Overview",
-            align: "start",
-            padding: {
-                top: 30,
-                bottom: 30
-            }
+            text: 'Attendance Overview'
         },
         legend: {
              display:false
         }
     },
-    //maintainAspectRatio: false,
+    maintainAspectRatio: false,
     scales: {
         y: {
             beginAtZero: true,
+            title: {
+                display: true,
+                text: "Percentt Attended"
+
+            }
         },
         x: {
-            grid: {
-                lineWidth: 0
+            title: {
+                display: true,
+                text: "Meeting Number"
+
             }
         }
     }
 }
   return (
     <div>
-        <Bar 
+        <Line 
             data={data}
             height={400}
             options={options}
@@ -86,4 +91,4 @@ var options = {
   )
 }
 
-export default MeetingBarChart
+export default LineChartDashboard

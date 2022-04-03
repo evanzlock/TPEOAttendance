@@ -8,24 +8,20 @@ ChartJS.register(
     BarElement
 )
 
-const BarChartHorizontalDashboard = () => {
+
+const MeetingBarChart = (props) => {
+
     const [chart, setChart] = useState([]);
-    //hardcoded for now
-    var lastGen = 2;
-    var lastEng = 2;
-    var lastDes = 2;
-    var lastProd = 2;
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch("http://localhost:5000/BarChartHorizData?lastGen="+lastGen+"&lastEng="+lastEng+"&lastDes="+lastDes+"&lastProd="+lastProd, {
+        await fetch('http://localhost:5000/MeetingBarData?type=' + props.type, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
             response.json().then((json) => {
-                console.log(json);
                 setChart(json);
             })
         }).catch(error => {
@@ -38,17 +34,15 @@ const BarChartHorizontalDashboard = () => {
     }, [])
 
 var data = {
-    labels: ["Design", "Engineering", "General", "Product"],
+    labels: chart.map(x => x.meetingNumber),
         datasets: [{
-            label: 'This Month',
+
+            label: 'Attendance Overview',
             data: chart.map(x => x.attendancePercent),
             backgroundColor: [
-                '#E6CDFF',
-                '#FFC4DC',
-                '#FFD5B8',
-                '#B2D1FF',
+                props.color,
             ],
-            borderWidth: 1
+            borderWidth: 0.5
         }]
 
 }
@@ -57,7 +51,12 @@ var options = {
     plugins: {
         title: {
             display: true,
-            text: 'This Month'
+            text: "Numerical Overview",
+            align: "start",
+            padding: {
+                top: 30,
+                bottom: 30
+            }
         },
         legend: {
              display:false
@@ -67,18 +66,23 @@ var options = {
     scales: {
         y: {
             beginAtZero: true,
-            grid: {
-                lineWidth: 0
-            },
+            title: {
+                display: true,
+                text: "Percentt Attended"
+
+            }
         },
         x: {
+            title: {
+                display: true,
+                text: "Meeting Number"
+
+            },
             grid: {
                 lineWidth: 0
-            },
-            display: false
+            }
         }
-    },
-    indexAxis: 'y'
+    }
 }
   return (
     <div>
@@ -92,4 +96,4 @@ var options = {
   )
 }
 
-export default BarChartHorizontalDashboard;
+export default MeetingBarChart
