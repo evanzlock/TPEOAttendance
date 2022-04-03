@@ -4,8 +4,6 @@
     display: grid;
     place-items: center;
     margin-top: 5rem;
-    background: rgb(66,4,53);
-    background: linear-gradient(90deg, rgba(66,4,53,1) 0%, rgba(81,22,111,1) 35%, rgba(12,29,84,1) 100%);
     padding: 3rem 5rem;
     border-radius: 10px;
   }

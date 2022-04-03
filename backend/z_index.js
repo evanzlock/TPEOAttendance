@@ -543,7 +543,7 @@ const updateMeetingHistory = async (meetingType, meetingNum) => {
   const meetingHistory = await getMeetingHistory();
   for (var j = 0; j < meetingHistory.length; j++) {
     var entry = meetingHistory[j];
-    if (entry.meetingType == meetingType && entry.meetingNumber == meetingNum.number) {
+    if (entry.meetingType == meetingType && entry.meetingNumber == meetingNum.number - 1) {
       //found the entry, update it
       const notionMeeting = new Client({ auth: process.env.NOTION_MEETINGHISTORY_TOKEN });
       const response = await notionMeeting.pages.update({

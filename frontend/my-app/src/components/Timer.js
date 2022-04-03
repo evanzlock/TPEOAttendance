@@ -45,7 +45,7 @@ export default function Timer(props) {
     //         .then(text => console.log(text))
     // }, [endTimer])
     return (
-        <div className="container">
+        <div className="container" style = {{background: props.color}}>
             <div className="time">
                 <span className="minute">{time.minute}</span>
                 <span>:</span>
