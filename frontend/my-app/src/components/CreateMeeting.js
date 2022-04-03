@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import configData from "../configurl.json";
 import Button from '@mui/material/Button';
+import Timer from "./Timer";
 var url = configData.DEV_URL;
 console.log(url);
 
@@ -17,21 +18,14 @@ export default function CreateMeeting(props) {
         color: '#000000',
         cursor: 'pointer',
         margin: '20px'
-    
-    } 
-    const [meetingInfo, setInfo] = useState({
-        code: "",
-        type: "",
-        startTime: null,
-        endTime: null
-    })
+
+    }
     const [toggleInfo, showInfo] = useState(false);
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
     useEffect(() => {
-        console.log('use effect');
-        fetch(`${url}/general`, {
+        fetch(`${url}/meeting/${props.type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,19 +35,35 @@ export default function CreateMeeting(props) {
             .then(data => {
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
+                setInfo({
+                    code: meetingInfo.code,
+                    type: meetingInfo.type,
+                    startTime: meetingInfo.startTime,
+                    endTime: data.data.endTime
+                })
                 console.log(meetingNumber);
                 console.log(isActive);
             })
     }, []);
+    const [meetingInfo, setInfo] = useState({
+        code: "",
+        type: props.type,
+        startTime: null,
+        endTime: props.endTime
+    })
+    console.log('Time:', meetingInfo.endTime - Date.now());
     //send code, duration, and type to backend for attendance verification
     //change toggle info so generate meeting is shown again
     function cancel(e) {
         e.preventDefault();
+        console.log(meetingInfo);
+        const info = JSON.stringify(meetingInfo);
         fetch(`${url}/cancel`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: info
         })
             .then(response => response.text())
             .then(text => console.log(text))
@@ -64,11 +74,14 @@ export default function CreateMeeting(props) {
     }
     function end(e) {
         e.preventDefault();
+        const info = JSON.stringify(meetingInfo);
+        console.log(meetingInfo);
         fetch(`${url}/update`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: info
         })
             .then(response => response.text())
             .then(text => console.log(text),
@@ -134,16 +147,11 @@ export default function CreateMeeting(props) {
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
             {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
             {!toggleInfo && isActive && <h1>There is already a meeting in progress.</h1>}
+            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()}></Timer>}
+
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
                 <input id="code" required onChange={(e) => handle(e)} placeholder="Enter meeting code" type="text"></input>
                 <input id="duration" required onChange={(e) => handle(e)} placeholder="Enter meeting duration" type="number"></input>
-                <select onChange={(e) => handle(e)} id="type" name="type">
-                    <option value="" selected disabled hidden>Choose a Meeting Type</option>
-                    <option value="General">General</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="Design">Design</option>
-                    <option value="Product">Product</option>
-                </select>
                 {!isPending && <Button variant="contained" type="submit">Begin Meeting</Button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>}
