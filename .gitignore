@@ -1,0 +1,11 @@
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.env
+node_modules
+backend/node_modules
+../node_modules
