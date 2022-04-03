@@ -414,7 +414,7 @@ app.post('/updateCheckin', async (req, res) => {
   const response = await notion.pages.retrieve({ page_id: pageId });
   var activeMeeting = false;
   // is an empty array if manually deleted otherwise an empty string
-  if (response.properties['Meeting Code'].title.length && response.properties['Meeting Code'].title[0].plain_text !== '') {
+  if (Date.now() < response.properties['End Time'].number) {
     meetingNum = response.properties[meetingType + " Meeting Number"];
     activeMeeting = true;
   }
@@ -422,7 +422,7 @@ app.post('/updateCheckin', async (req, res) => {
     return res.json({msg: 'Meeting is not currently active.'});
   } 
   //check if meeting code is correct
-  if (response.properties['Meeting Code'].title[0].plain_text !== code) {
+  if (response.properties['Code'].rich_text[0].text.content !== code) {
     return res.json({msg: 'Incorrect code'});
   }
 

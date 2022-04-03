@@ -15,9 +15,6 @@ import './teamPage.css';
 const TeamPage = (props) => {
   return (
     <div>
-
-      
-
     <div className = "team">
     <div className="title">
       <h5> {props.type} Meetings </h5>
