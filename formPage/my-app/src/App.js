@@ -1,17 +1,19 @@
 
-import './App.css';
-import CheckinForm from './CheckinForm'
-import ExcusedAbsenceForm from './ExcusedAbsenceForm';
+import CheckinForm from './pages/CheckinForm'
+import ExcusedAbsenceForm from './pages/ExcusedAbsenceForm';
 import React, {Component} from 'react';
+import './style.css';
 
 class App extends Component {
   render() {
     return (
     <div className="App">
-      <h1>Member Check-in Form</h1>
-      <CheckinForm/>
-      <h1>Excused Absence Form</h1>
+      <div className = "form">
       <ExcusedAbsenceForm/>
+       
+      </div>
+      
+      {/* <CheckinForm/>*/}
     </div>
     )
   };

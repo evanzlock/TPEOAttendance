@@ -1,0 +1,30 @@
+.button {
+    background-color: #FFD5B8 !important;
+    margin-bottom: 50px;
+}
+
+.nameField {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    margin-left: 150px;
+    margin-right: 150px;
+    color: #DADADA !important;
+}
+
+.meetingTypeField {
+    margin-bottom: 20px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.codeField {
+    margin-bottom: 20px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.absenceField {
+    margin-bottom: 20px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
