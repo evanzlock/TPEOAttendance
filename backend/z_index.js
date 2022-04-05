@@ -411,20 +411,38 @@ app.post('/updateCheckin', async (req, res) => {
         } else if (obj.checkedin == true) {
           return res.json({ msg: 'You have already signed in for this meeting.' });
         } else {
-          //update member attendance database
           const pageId = obj.pageid;
-          const response = await notion.pages.update({
-            page_id: pageId,
-            properties: {
-              "Total Meetings Attended": obj.total + 1,
-              "Unexcused Absences": obj.unexcused - 1,
-              "Currently Checked-in": true
-            },
-          });
-
+          var tardy = false;
+          //update member attendance database
+          if (Date.now() > response.properties['Tardy Time'].number) {
+            //mark this person as tardy
+            tardy = true;
+            const response = await notion.pages.update({
+              page_id: pageId,
+              properties: {
+                "Total Meetings Attended": obj.total + 1,
+                "Unexcused Absences": obj.unexcused - 1,
+                "Currently Checked-in": true,
+                "Tardies": obj.tardies + 1
+              },
+            });
+          } else {
+            const response = await notion.pages.update({
+              page_id: pageId,
+              properties: {
+                "Total Meetings Attended": obj.total + 1,
+                "Unexcused Absences": obj.unexcused - 1,
+                "Currently Checked-in": true
+              },
+            });
+          }
           //update meeting history database- no need to await (will speed up checkin time for user)
           updateMeetingHistory(meetingType, meetingNum);
-          return res.json({ msg: 'Success! You are checked in.' });
+          if (tardy) {
+            return res.json({ msg: 'Success! You are checked in (tardy)' });
+          } else {
+            return res.json({ msg: 'Success! You are checked in.' });
+          }
         }
       }
     }
@@ -509,7 +527,8 @@ app.post('/clear', async (req, res) => {
           "Unexcused Absences": 0,
           "Total Meetings Attended": 0,
           "Excused Absences": 0,
-          "Currently Checked-in": false
+          "Currently Checked-in": false,
+          "Tardies": 0
         },
       });
     }

@@ -9,11 +9,12 @@ class App extends Component {
     return (
     <div className="App">
       <div className = "form">
-      <ExcusedAbsenceForm/>
+      <CheckinForm/>
+      
        
       </div>
       
-      {/* <CheckinForm/>*/}
+      {/* <ExcusedAbsenceForm/>*/}
     </div>
     )
   };

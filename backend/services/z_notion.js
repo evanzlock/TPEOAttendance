@@ -48,7 +48,8 @@ module.exports = async function getMembers() {
             unexcused: page.properties['Unexcused Absences'].number,
             total: page.properties['Total Meetings Attended'].number,
             pageid: page.id,
-            checkedin: page.properties['Currently Checked-in'].checkbox
+            checkedin: page.properties['Currently Checked-in'].checkbox,
+            tardies: page.properties['Tardies'].number
         }
     })
     return members
