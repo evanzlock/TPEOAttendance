@@ -73,7 +73,7 @@ app.get('/BarChartHorizData', async (req, res) => {
   var lastProd = responseP.properties["Product Meeting Number"];
   const responseE = await notion.pages.retrieve({ page_id: process.env.NOTION_ENGINEERING_MEETING_INFO });
   var lastEng = responseE.properties["Engineering Meeting Number"];
-  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd.number) || (x.meetingType === 'Engineering' && x.meetingNumber == lastEng.number) || (x.meetingType === 'General' && x.meetingNumber == lastGen.number) || (x.meetingType === 'Design' && x.meetingNumber == lastDes.number));
+  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd.number - 1) || (x.meetingType === 'Engineering' && x.meetingNumber == lastEng.number - 1) || (x.meetingType === 'General' && x.meetingNumber == lastGen.number - 1) || (x.meetingType === 'Design' && x.meetingNumber == lastDes.number - 1));
   result.sort(function (a, b) {
     return a.meetingType.localeCompare(b.meetingType);
   });
