@@ -231,9 +231,6 @@ app.put('/update', async (req, res) => {
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
-      'Meeting Type': {
-        select: meetingType
-      },
       'Code': {
         rich_text: [{
           text: {
