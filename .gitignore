@@ -1,3 +1,11 @@
+# testing
+/coverage
+
+# production
+/build
+
+# misc
 .env
 node_modules
-dashboard.js
+backend/node_modules
+../node_modules

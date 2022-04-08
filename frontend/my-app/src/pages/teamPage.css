@@ -1,0 +1,68 @@
+.flex-container-row {
+    display: flex;
+    flex-direction: row;
+}
+.flex-container-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexbutton {
+    
+    width: 396px;
+    height: '71px';
+    background: #FFD5B8;
+    box-shadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)';
+    border-radius: '10px';
+    font-family: 'Montserrat';
+    font-style: 'normal';
+    font-weight: '600';
+    font-size: '24px';
+    line-height: '29px';
+    color: '#000000';
+    cursor: 'pointer';
+    
+}
+
+.flex1 {
+    margin-top: 5px;
+    margin-left: 100px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+width: 389px;
+height: 450px;
+left: 325px;
+top: 190px;
+
+background: #FFFFFF;
+box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
+border-radius: 10px;
+}  
+
+.flex2 {
+    margin-top: 5px;
+    margin-left: 70px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    width: 606px;
+height: 450px;
+left: 749px;
+top: 190px;
+
+background: #FFFFFF;
+box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
+border-radius: 10px;
+} 
+
+.team {
+    background-color: #E5E5E5;
+}
+
+.title {
+    text-align: center;
+    width:200px;
+    margin-left:20px;
+    padding-top: 20px;
+}
+

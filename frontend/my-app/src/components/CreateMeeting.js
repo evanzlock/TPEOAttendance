@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import configData from "../configurl.json";
 import Button from '@mui/material/Button';
+import Timer from "./Timer";
 var url = configData.DEV_URL;
 console.log(url);
-var style = {
-    position: 'absolute',
-    width: '396px',
-    height: '71px',
-    left: '320px',
-    top: '165px',
-    background: '#FFD5B8',
-    boxShadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)',
-    borderRadius: '10px',
-    fontFamily: 'Montserrat',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '24px',
-    lineHeight: '29px',
-    color: '#000000',
-    cursor: 'pointer'
 
-}
 export default function CreateMeeting(props) {
+<<<<<<< HEAD
     const [meetingInfo, setInfo] = useState({
         code: "",
         startTime: null,
         endTime: null
     })
+=======
+    var style = {
+        background: props.color,
+        boxShadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)',
+        borderRadius: '10px',
+        fontFamily: 'Montserrat',
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: '24px',
+        lineHeight: '29px',
+        color: '#000000',
+        cursor: 'pointer',
+        margin: '20px'
+
+    }
+>>>>>>> startcode
     const [toggleInfo, showInfo] = useState(false);
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
 
     useEffect(() => {
+<<<<<<< HEAD
         console.log(`${url}/meeting/${props.meetingType}`)
         fetch(`${url}/meeting/${props.meetingType}`, {
+=======
+        fetch(`${url}/meeting/${props.type}`, {
+>>>>>>> startcode
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,20 +49,43 @@ export default function CreateMeeting(props) {
             .then(data => {
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
+<<<<<<< HEAD
                 console.log("AHHHHHHHHHHH")
+=======
+                setInfo({
+                    code: meetingInfo.code,
+                    type: meetingInfo.type,
+                    startTime: meetingInfo.startTime,
+                    endTime: data.data.endTime
+                })
+>>>>>>> startcode
                 console.log(meetingNumber);
                 console.log(isActive);
             })
     }, []);
+    const [meetingInfo, setInfo] = useState({
+        code: "",
+        type: props.type,
+        startTime: null,
+        endTime: props.endTime
+    })
+    console.log('Time:', meetingInfo.endTime - Date.now());
     //send code, duration, and type to backend for attendance verification
     //change toggle info so generate meeting is shown again
     function cancel(e) {
         e.preventDefault();
+<<<<<<< HEAD
         fetch(`${url}/cancel/${props.meetingType}`, {
+=======
+        console.log(meetingInfo);
+        const info = JSON.stringify(meetingInfo);
+        fetch(`${url}/cancel`, {
+>>>>>>> startcode
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: info
         })
             .then(response => response.text())
             .then(text => console.log(text))
@@ -68,11 +96,18 @@ export default function CreateMeeting(props) {
     }
     function end(e) {
         e.preventDefault();
+<<<<<<< HEAD
         fetch(`${url}/update/${props.meetingType}`, {
+=======
+        const info = JSON.stringify(meetingInfo);
+        console.log(meetingInfo);
+        fetch(`${url}/update`, {
+>>>>>>> startcode
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: info
         })
             .then(response => response.text())
             .then(text => console.log(text),
@@ -135,6 +170,7 @@ export default function CreateMeeting(props) {
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
+<<<<<<< HEAD
             {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate {props.meetingType} Meeting #{meetingNumber}</button>}
             {!toggleInfo && isActive && <h1>There is already a meeting in progress.</h1>}
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
@@ -147,6 +183,15 @@ export default function CreateMeeting(props) {
                     <option value="Design">Design</option>
                     <option value="Product">Product</option>
                 </select> */}
+=======
+            {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
+            {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
+            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color = {props.color}></Timer>}
+
+            {toggleInfo && <form onSubmit={(e) => submit(e)}>
+                <input id="code" required onChange={(e) => handle(e)} placeholder="Enter meeting code" type="text"></input>
+                <input id="duration" required onChange={(e) => handle(e)} placeholder="Enter meeting duration" type="number"></input>
+>>>>>>> startcode
                 {!isPending && <Button variant="contained" type="submit">Begin Meeting</Button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>}

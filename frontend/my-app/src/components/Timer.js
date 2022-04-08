@@ -6,15 +6,14 @@ export default function Timer(props) {
 
     const [time, setTime] = useState({
         second: '00',
-        minute: String(props.minutes),
-        counter: props.minutes * 60
+        minute: String(Math.floor(props.time / 60000)),
+        counter: Math.floor(props.time / 1000)
     })
-    const [isActive, setIsActive] = useState(false);
     const [endTimer, stopTimer] = useState(false);
     useEffect(() => {
         let intervalId;
         //allow timer to go to 0
-        if (isActive && time.counter > -2) {
+        if (time.counter > -2) {
             if (time.counter === -2) {
                 stopTimer(true);
             }
@@ -33,33 +32,24 @@ export default function Timer(props) {
             }, 1000)
         }
         return () => clearInterval(intervalId);
-    }, [isActive, time.counter])
+    }, [time.counter])
     //put request to update members data when timer ends/meeting ends
-    useEffect(() => {
-        fetch(`${URL}/update`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(response => response.text())
-            .then(text => console.log(text))
-    }, [endTimer])
-    function handleClick(e) {
-        e.preventDefault();
-        setIsActive(!isActive);
-    }
+    // useEffect(() => {
+    //     fetch(`${URL}/update`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         }
+    //     })
+    //         .then(response => response.text())
+    //         .then(text => console.log(text))
+    // }, [endTimer])
     return (
-        <div className="container">
+        <div className="container" style = {{background: props.color}}>
             <div className="time">
                 <span className="minute">{time.minute}</span>
                 <span>:</span>
                 <span className="second">{time.second}</span>
-            </div>
-            <div className="buttons">
-                <button onClick={handleClick} className="start">
-                    {isActive ? "Pause" : "Start"}
-                </button>
             </div>
         </div>
     )
