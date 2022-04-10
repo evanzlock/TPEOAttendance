@@ -3,6 +3,7 @@ import CheckinForm from './pages/CheckinForm'
 import ExcusedAbsenceForm from './pages/ExcusedAbsenceForm';
 import React, {Component} from 'react';
 import './style.css';
+import MemberTable from './pages/MemberTable';
 
 class App extends Component {
   render() {
@@ -14,7 +15,8 @@ class App extends Component {
        
       </div>
       
-      {/* <ExcusedAbsenceForm/>*/}
+      {/* <ExcusedAbsenceForm/>
+      <MemberTable/>*/}
     </div>
     )
   };
