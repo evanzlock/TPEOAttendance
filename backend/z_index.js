@@ -246,7 +246,7 @@ app.put('/update', async (req, res) => {
       'End Time': {
         number: null
       },
-      'General Meeting Number': {
+      [propertyType]: {
         number: newMeetingNumber
       }
     }
