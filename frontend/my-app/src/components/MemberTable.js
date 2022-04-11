@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import MaterialTable from '@material-table/core'
 import configData from "../configurl.json";
-var URL = configData.DEV_URL;
+var URL = configData.URL;
 
 const MemberTable = (props) => {
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import configData from "../configurl.json";
 import Button from '@mui/material/Button';
 import Timer from "./Timer";
-var url = configData.DEV_URL;
+var url = configData.URL;
 
 export default function CreateMeeting(props) {
     var style = {

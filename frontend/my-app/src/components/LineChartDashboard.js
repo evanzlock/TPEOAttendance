@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement} from 'chart.js'
 import {Line} from 'react-chartjs-2'
 import configData from "../configurl.json";
-var URL = configData.DEV_URL;
+var URL = configData.URL;
 
 ChartJS.register(
     CategoryScale,

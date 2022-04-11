@@ -4,7 +4,7 @@ import {Chart as ChartJS} from "chart.js/auto"
 import {Card} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import configData from "../configurl.json";
-var URL = configData.DEV_URL;
+var URL = configData.URL;
 
 const DonutChart = (props) => {
     const [chart, setChart] = useState();
