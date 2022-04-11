@@ -6,13 +6,6 @@ var url = configData.DEV_URL;
 console.log(url);
 
 export default function CreateMeeting(props) {
-<<<<<<< HEAD
-    const [meetingInfo, setInfo] = useState({
-        code: "",
-        startTime: null,
-        endTime: null
-    })
-=======
     var style = {
         background: props.color,
         boxShadow: '0px 0px 20px 3px rgba(0, 0, 0, 0.05)',
@@ -27,19 +20,13 @@ export default function CreateMeeting(props) {
         margin: '20px'
 
     }
->>>>>>> startcode
     const [toggleInfo, showInfo] = useState(false);
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
 
     useEffect(() => {
-<<<<<<< HEAD
-        console.log(`${url}/meeting/${props.meetingType}`)
-        fetch(`${url}/meeting/${props.meetingType}`, {
-=======
         fetch(`${url}/meeting/${props.type}`, {
->>>>>>> startcode
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -49,16 +36,12 @@ export default function CreateMeeting(props) {
             .then(data => {
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
-<<<<<<< HEAD
-                console.log("AHHHHHHHHHHH")
-=======
                 setInfo({
                     code: meetingInfo.code,
                     type: meetingInfo.type,
                     startTime: meetingInfo.startTime,
                     endTime: data.data.endTime
                 })
->>>>>>> startcode
                 console.log(meetingNumber);
                 console.log(isActive);
             })
@@ -74,13 +57,9 @@ export default function CreateMeeting(props) {
     //change toggle info so generate meeting is shown again
     function cancel(e) {
         e.preventDefault();
-<<<<<<< HEAD
-        fetch(`${url}/cancel/${props.meetingType}`, {
-=======
         console.log(meetingInfo);
         const info = JSON.stringify(meetingInfo);
         fetch(`${url}/cancel`, {
->>>>>>> startcode
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,13 +75,9 @@ export default function CreateMeeting(props) {
     }
     function end(e) {
         e.preventDefault();
-<<<<<<< HEAD
-        fetch(`${url}/update/${props.meetingType}`, {
-=======
         const info = JSON.stringify(meetingInfo);
         console.log(meetingInfo);
         fetch(`${url}/update`, {
->>>>>>> startcode
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,28 +145,13 @@ export default function CreateMeeting(props) {
     return (
         <div>
             {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
-<<<<<<< HEAD
-            {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate {props.meetingType} Meeting #{meetingNumber}</button>}
-            {!toggleInfo && isActive && <h1>There is already a meeting in progress.</h1>}
-            {toggleInfo && <form onSubmit={(e) => submit(e)}>
-                <input id="code" required onChange={(e) => handle(e)} placeholder="Enter meeting code" type="text"></input>
-                <input id="duration" required onChange={(e) => handle(e)} placeholder="Enter meeting duration" type="number"></input>
-                {/* <select onChange={(e) => handle(e)} id="type" name="type">
-                    <option value="" selected disabled hidden>Choose a Meeting Type</option>
-                    <option value="General">General</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="Design">Design</option>
-                    <option value="Product">Product</option>
-                </select> */}
-=======
             {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
             {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
-            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color = {props.color}></Timer>}
+            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color={props.color}></Timer>}
 
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
                 <input id="code" required onChange={(e) => handle(e)} placeholder="Enter meeting code" type="text"></input>
                 <input id="duration" required onChange={(e) => handle(e)} placeholder="Enter meeting duration" type="number"></input>
->>>>>>> startcode
                 {!isPending && <Button variant="contained" type="submit">Begin Meeting</Button>}
                 {isPending && <button disabled type="submit">Generating Meeting</button>}
             </form>}
