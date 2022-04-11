@@ -38,7 +38,7 @@ const MemberTable = (props) => {
     const options = {
       filtering: true,
       //turns the row green or red depending on num absences
-      rowStyle: rowData => ({backgroundColor: rowData.unexcused  > 3 ? "#ffa9a966" : "#a3ebb366"}),
+      rowStyle: rowData => ({backgroundColor: (rowData.unexcused + rowData.tardies/2)  > 3 ? "#ffa9a966" : "#a3ebb366"}),
       //tableLayout: 'fixed',
     };
     
@@ -48,6 +48,7 @@ const MemberTable = (props) => {
     {title: "Team", field: "team", lookup: {Design: "Design", Engineering: "Engineering", Product: "Product", Executive: "Executive"}, width: '10px'},
     {title: "Meetings Attended", field: "total", filtering:false, width: '10px'},
     {title: "Unexcused Absences", field: "unexcused", filtering:false, width: '10px'},
+    {title: "Tardies",field: "tardies", filtering:false, width: '10px'}
   ]
 
   

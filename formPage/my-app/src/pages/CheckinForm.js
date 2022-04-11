@@ -1,7 +1,10 @@
 import React from 'react';
+import {Card, Form, Button} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './form.css';
 
 async function getCheckin(state) {
-    const request = await fetch("http://localhost:5000/submitExcusedAbsence", {
+    const request = await fetch("http://localhost:5000/updateCheckin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -9,7 +12,7 @@ async function getCheckin(state) {
         body: JSON.stringify({
             "name": state.name,
             "type": state.type,
-            "reason": state.reason
+            "code": state.code
         }),
       });
       // Get Status and Response
@@ -20,11 +23,12 @@ async function getCheckin(state) {
 }
 
 
-export default class ExcusedAbsenceForm extends React.Component {
+export default class CheckinForm extends React.Component {
+    
     state = {
         name: '',
         type: 'General',
-        reason: ''
+        code: ''
     };
 
     change = (e) => {
@@ -39,18 +43,30 @@ export default class ExcusedAbsenceForm extends React.Component {
         getCheckin(this.state).then(res => alert(res));
     };
 
+    
+
     render() {
         return (
-            <form>
+        <div>
+        <h1>Member Check-in Form</h1>
+        <Card border="dark">
+            <Card.Body align = "center">
+            <Form>
+                <Form.Group>
                 <div>
-                    <input 
+                    <div className = "nameField">
+                    <Form.Control 
+                    style={{backgroundColor: "#DADADA"}}
                     name = "name"
                     placeholder = 'Name' 
                     value = {this.state.name} 
                     onChange={e => this.change(e)} 
                     />
-                    <br />
-                    <select 
+                    </div>
+                    
+                    <div className = "meetingTypeField">
+                    <Form.Select 
+                        style={{backgroundColor: "#DADADA"}}
                         name = "type"
                         value = {this.state.type}
                         onChange={e => this.change(e)}> 
@@ -58,19 +74,27 @@ export default class ExcusedAbsenceForm extends React.Component {
                         <option value = "Engineering">Engineering</option>
                         <option value = "Product">Product</option>
                         <option value = "Design">Design</option>
-                    </select>
-                    <br />
+                    </Form.Select>
+                    </div>
 
-                    <textarea 
-                    name = "reason"
-                    placeholder = 'Reason for Absence' 
-                    value = {this.state.reason} 
+                    <div className = "codeField">
+                    <Form.Control 
+                    style={{backgroundColor: "#DADADA"}}
+                    name = "code"
+                    placeholder = 'Meeting Code' 
+                    value = {this.state.code} 
                     onChange={e => this.change(e)} 
                     />
-                    <br />
-                    <button onClick={e => this.onSubmit(e)}>Submit</button>
+                    </div>
+
+                    <Button className = 'button' size="lg" variant="outline-light" style={{ color:"#00005c"}} onClick={e => this.onSubmit(e)}>Submit</Button>
+                    
                 </div>
-            </form>
+            </Form.Group>
+            </Form>
+            </Card.Body>
+        </Card>
+        </div>
            
         );
     }

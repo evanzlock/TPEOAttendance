@@ -73,7 +73,7 @@ app.get('/BarChartHorizData', async (req, res) => {
   var lastProd = responseP.properties["Product Meeting Number"];
   const responseE = await notion.pages.retrieve({ page_id: process.env.NOTION_ENGINEERING_MEETING_INFO });
   var lastEng = responseE.properties["Engineering Meeting Number"];
-  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd.number) || (x.meetingType === 'Engineering' && x.meetingNumber == lastEng.number) || (x.meetingType === 'General' && x.meetingNumber == lastGen.number) || (x.meetingType === 'Design' && x.meetingNumber == lastDes.number));
+  var result = meetingHist.filter(x => (x.meetingType === 'Product' && x.meetingNumber == lastProd.number - 1) || (x.meetingType === 'Engineering' && x.meetingNumber == lastEng.number - 1) || (x.meetingType === 'General' && x.meetingNumber == lastGen.number - 1) || (x.meetingType === 'Design' && x.meetingNumber == lastDes.number - 1));
   result.sort(function (a, b) {
     return a.meetingType.localeCompare(b.meetingType);
   });
@@ -231,9 +231,6 @@ app.put('/update', async (req, res) => {
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
-      'Meeting Type': {
-        select: meetingType
-      },
       'Code': {
         rich_text: [{
           text: {
@@ -333,7 +330,8 @@ app.post('/meeting', async (req, res) => {
           page_id: pageId,
           properties: {
             "Unexcused Absences": obj.unexcused + 1,
-            "Currently Checked-in": false
+            "Currently Checked-in": false,
+            "Excused For Next Meeting": false
           },
         });
       }
@@ -411,20 +409,38 @@ app.post('/updateCheckin', async (req, res) => {
         } else if (obj.checkedin == true) {
           return res.json({ msg: 'You have already signed in for this meeting.' });
         } else {
-          //update member attendance database
           const pageId = obj.pageid;
-          const response = await notion.pages.update({
-            page_id: pageId,
-            properties: {
-              "Total Meetings Attended": obj.total + 1,
-              "Unexcused Absences": obj.unexcused - 1,
-              "Currently Checked-in": true
-            },
-          });
-
+          var tardy = false;
+          //update member attendance database
+          if (Date.now() > response.properties['Tardy Time'].number) {
+            //mark this person as tardy
+            tardy = true;
+            const response = await notion.pages.update({
+              page_id: pageId,
+              properties: {
+                "Total Meetings Attended": obj.total + 1,
+                "Unexcused Absences": obj.unexcused - 1,
+                "Currently Checked-in": true,
+                "Tardies": obj.tardies + 1
+              },
+            });
+          } else {
+            const response = await notion.pages.update({
+              page_id: pageId,
+              properties: {
+                "Total Meetings Attended": obj.total + 1,
+                "Unexcused Absences": obj.unexcused - 1,
+                "Currently Checked-in": true
+              },
+            });
+          }
           //update meeting history database- no need to await (will speed up checkin time for user)
           updateMeetingHistory(meetingType, meetingNum);
-          return res.json({ msg: 'Success! You are checked in.' });
+          if (tardy) {
+            return res.json({ msg: 'Success! You are checked in (tardy)' });
+          } else {
+            return res.json({ msg: 'Success! You are checked in.' });
+          }
         }
       }
     }
@@ -447,15 +463,18 @@ app.post('/submitExcusedAbsence', async (req, res) => {
     if (obj != undefined) {
       if (obj.name === name) {
         //ensures only general and team-specific meetings counted for attendance
-        if (obj.team != meetingType && obj.team != 'General') {
-          return res.json({ msg: 'you cannot submit an absence from for this type of meetting based on your team' });
+        if (obj.team != meetingType && meetingType != 'General') {
+          return res.json({ msg: 'You cannot submit an absence from for this type of meeting based on your team' });
+        } else if (obj.excusedStatus) {
+          return res.json({ msg: 'You cannot submit an absence form again' });
         } else {
           const pageId = obj.pageid;
           const response = await notion.pages.update({
             page_id: pageId,
             properties: {
               "Excused Absences": obj.excused + 1,
-              "Unexcused Absences": obj.unexcused - 1
+              "Unexcused Absences": obj.unexcused - 1,
+              "Excused For Next Meeting": true
             },
           });
           //found the member to update- exit loop
@@ -509,7 +528,8 @@ app.post('/clear', async (req, res) => {
           "Unexcused Absences": 0,
           "Total Meetings Attended": 0,
           "Excused Absences": 0,
-          "Currently Checked-in": false
+          "Currently Checked-in": false,
+          "Tardies": 0
         },
       });
     }
