@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement} from 'chart.js'
 import {Line} from 'react-chartjs-2'
+import configData from "../configurl.json";
+var URL = configData.DEV_URL;
 
 ChartJS.register(
     CategoryScale,
@@ -16,7 +18,7 @@ const LineChartDashboard = () => {
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/MeetingBarData?type=General', {
+        await fetch(`${URL}/MeetingBarData?type=General`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +68,7 @@ var options = {
             beginAtZero: true,
             title: {
                 display: true,
-                text: "Percentt Attended"
+                text: "Percent Attended"
 
             }
         },

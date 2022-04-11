@@ -3,12 +3,14 @@ import {Doughnut} from 'react-chartjs-2';
 import {Chart as ChartJS} from "chart.js/auto"
 import {Card} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import configData from "../configurl.json";
+var URL = configData.DEV_URL;
 
 const DonutChart = (props) => {
     const [chart, setChart] = useState();
 
     const fetchData = async () => {
-        await fetch("http://localhost:5000/DonutData?type=" + props.type, {
+        await fetch(`${URL}/DonutData?type=${props.type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
