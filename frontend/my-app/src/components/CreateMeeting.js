@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import configData from "../configurl.json";
 import Button from '@mui/material/Button';
 import Timer from "./Timer";
-var url = configData.DEV_URL;
-console.log(url);
+var url = configData.URL;
 
 export default function CreateMeeting(props) {
     var style = {
@@ -25,7 +24,7 @@ export default function CreateMeeting(props) {
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
     useEffect(() => {
-        fetch(`${url}/meeting/${props.type}`, {
+        fetch(`${URL}/meeting/${props.type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

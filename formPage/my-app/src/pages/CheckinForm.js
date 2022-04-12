@@ -2,9 +2,11 @@ import React from 'react';
 import {Card, Form, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './form.css';
+import configData from '../configurl.json';
+var URL = configData.URL;
 
 async function getCheckin(state) {
-    const request = await fetch("http://localhost:5000/updateCheckin", {
+    const request = await fetch(`${URL}/updateCheckin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

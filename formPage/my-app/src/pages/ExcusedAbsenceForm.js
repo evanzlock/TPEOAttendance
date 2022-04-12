@@ -2,10 +2,12 @@ import React from 'react';
 import {Card, Button, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './form.css';
+import configData from '../configurl.json';
+var URL = configData.URL;
 
 
 async function getCheckin(state) {
-    const request = await fetch("http://localhost:5000/submitExcusedAbsence", {
+    const request = await fetch(`${URL}/submitExcusedAbsence`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

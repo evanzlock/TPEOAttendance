@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
 import configData from "../config.json";
-var URL = configData.DEV_URL;
+var URL = configData.URL;
 export default function Timer(props) {
 
     const [time, setTime] = useState({

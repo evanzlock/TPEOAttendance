@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import MaterialTable from '@material-table/core'
+import configData from '../configurl.json';
+var URL = configData.URL;
 
 const MemberTable = () => {
 
@@ -8,7 +10,7 @@ const MemberTable = () => {
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/members?type=General', {
+        await fetch(`${URL}/members?type=General`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

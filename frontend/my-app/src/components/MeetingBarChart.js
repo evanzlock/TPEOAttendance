@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {Chart as ChartJS, BarElement, CategoryScale, LinearScale} from 'chart.js'
 import {Bar} from 'react-chartjs-2'
+import configData from "../configurl.json";
+var URL = configData.URL;
 
 ChartJS.register(
     CategoryScale,
@@ -15,7 +17,7 @@ const MeetingBarChart = (props) => {
 
     useEffect(() => {
      const fetchData = async () => {
-        await fetch('http://localhost:5000/MeetingBarData?type=' + props.type, {
+        await fetch(`${URL}/MeetingBarData?type=${props.type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
