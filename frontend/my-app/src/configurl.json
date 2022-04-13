@@ -1,5 +1,5 @@
 {
-    "PROD_URL": "https://tpeoattendance.herokuapp.com/",
+    "PROD_URL": "https://tpeoattendance.herokuapp.com",
     "DEV_URL": "http://localhost:5000",
-    "URL": "https://tpeoattendance.herokuapp.com/"
+    "URL": "https://tpeoattendance.herokuapp.com"
 }
