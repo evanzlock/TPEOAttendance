@@ -1,5 +1,5 @@
 {
     "PROD_URL": "",
     "DEV_URL": "http://localhost:5000",
-    "URL" : "http://localhost:5000"
+    "URL": "https://tpeoattendance.herokuapp.com/"
 }
