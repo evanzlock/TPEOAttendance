@@ -9,10 +9,25 @@ const cors = require("cors");
 const app = express();
 const { Client } = require('@notionhq/client');
 const notion = new Client({ auth: process.env.NOTION_KEY });
+const path = require("path");
+
+// Have node 
+app.use("/app", express.static(path.resolve(__dirname, '../frontend/my-app/build')));
+app.use("/formpage", express.static(path.resolve(__dirname, '../formPage/my-app/build')));
+
+app.get('app/*', (req, res) => {
+  console.log(path.resolve(__dirname, '../frontend/my-app/build', 'index.html'))
+  res.sendFile(path.resolve(__dirname, '../frontend/my-app/build', 'index.html'));
+})
+app.get('formpage/*', (req, res) => {
+  console.log(path.resolve(__dirname, '../formPage/my-app/build', 'index.html'))
+  res.sendFile(path.resolve(__dirname, '../formPage/my-app/build', 'index.html'));
+})
 //middleware
 app.use(cors({
   origin: '*'
 }));
+
 app.use(express.json());
 app.get('/members', async (req, res) => {
   const members = await getMembers()
