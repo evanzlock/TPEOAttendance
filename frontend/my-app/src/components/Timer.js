@@ -13,8 +13,8 @@ export default function Timer(props) {
     useEffect(() => {
         let intervalId;
         //allow timer to go to 0
-        if (time.counter > -2) {
-            if (time.counter === -2) {
+        if (time.counter > -1) {
+            if (time.counter === -1) {
                 stopTimer(true);
             }
             intervalId = setInterval(() => {
@@ -33,19 +33,8 @@ export default function Timer(props) {
         }
         return () => clearInterval(intervalId);
     }, [time.counter])
-    //put request to update members data when timer ends/meeting ends
-    // useEffect(() => {
-    //     fetch(`${URL}/update`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }
-    //     })
-    //         .then(response => response.text())
-    //         .then(text => console.log(text))
-    // }, [endTimer])
     return (
-        <div className="container" style = {{background: props.color}}>
+        <div className="container" style={{ background: props.color }}>
             <div className="time">
                 <span className="minute">{time.minute}</span>
                 <span>:</span>

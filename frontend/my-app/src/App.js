@@ -2,14 +2,14 @@ import './App.css';
 
 import Dashboard from './pages/dashboard';
 import TeamPage from './pages/teamPage';
-
+import Navbar from './components/Navbar';
 function App() {
   return (
     <div className="App">
-      
-      <TeamPage type='Engineering' color = '#FFC4DC'/>
-       
-      
+      <Navbar></Navbar>
+      <TeamPage type='Engineering' color='#FFC4DC' />
+
+
       {/*
       //TODO: with navbar update with routing
       <Dashboard/>

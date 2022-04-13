@@ -1,39 +1,49 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
+import "./Navbar.css";
 export default function Navbar() {
+    var navItemStyle = {
+        "fontFamily": 'Montserrat',
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "fontSize": "18px",
+        "lineHeight": "22px",
+        color: "#000000"
+    }
     return (
         <div className="navigation">
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <nav className="navbar navbar-light bg-light">
                 <div className="container">
-                    <NavLink className="navbar-brand" to="/">
-                        Home
-                    </NavLink>
                     <div>
+                        <a class="navbar-brand" href="/">
+                            <div class="logo-image">
+                                <img src="tpeo.png" href="#" class="img-fluid" alt="TPEO logo" />
+                            </div>
+                        </a>
                         <ul className="navbar-nav ml-auto">
-                            <li className="nav-item">
+                            <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/">
-                                    Dashboard
+                                    Home
                                     <span className="sr-only">(current)</span>
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/meeting/:meetingType">
+                            <li className="nav-item" style={navItemStyle}>
+                                <NavLink className="nav-link" to="/meeting/General">
                                     General
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/meeting/:meetingType">
+                            <li className="nav-item" style={navItemStyle}>
+                                <NavLink className="nav-link" to="/meeting/Design">
                                     Design
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/meeting/:meetingType">
+                            <li className="nav-item" style={navItemStyle}>
+                                <NavLink className="nav-link" to="/meeting/Product">
                                     Product
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/meeting/:meetingType">
+                                <NavLink className="nav-link" to="/meeting/Engineering">
                                     Engineering
                                 </NavLink>
                             </li>

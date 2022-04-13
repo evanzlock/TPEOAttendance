@@ -108,7 +108,6 @@ app.get('/meeting/:meetingType', async (req, res) => {
   }
   let endTime = response.properties['End Time'].number
   let number = response.properties[propertyType].number
-  let endtime = response.properties['End Time'].number
   return res.json({
     msg: "Home page opened",
     data: {
@@ -120,7 +119,7 @@ app.get('/meeting/:meetingType', async (req, res) => {
 });
 
 //cancel meeting
-app.put('/cancel/:meetingType', async (req, res) => {
+app.put('/cancel', async (req, res) => {
   const body = req.body
   var pageId = '';
   var propertyType = '';
@@ -158,6 +157,9 @@ app.put('/cancel/:meetingType', async (req, res) => {
         number: null
       },
       'End Time': {
+        number: null
+      },
+      'Tardy Time': {
         number: null
       },
       [propertyType]: {
@@ -279,6 +281,7 @@ app.put('/update', async (req, res) => {
 //endpoint for receiving meeting info and updating database with it- essentially creates the meeting
 app.post('/meeting', async (req, res) => {
   const body = req.body
+  console.log(body);
   var meetingType = body.type;
   var pageId = '';
   var propertyType = '';
@@ -298,6 +301,7 @@ app.post('/meeting', async (req, res) => {
     pageId = process.env.NOTION_DESIGN_MEETING_INFO;
     propertyType = "Design Meeting Number"
   }
+  console.log(pageId)
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
   let meetingNumber = parseInt(retrieveInfo.properties[propertyType].number)
   const response = await notion.pages.update({
@@ -316,6 +320,9 @@ app.post('/meeting', async (req, res) => {
       },
       'End Time': {
         number: body.endTime
+      },
+      'Tardy Time': {
+        number: body.tardyTime
       },
       [propertyType]: {
         number: meetingNumber + 1

@@ -3,7 +3,7 @@ import CreateMeeting from '../components/CreateMeeting';
 import LineChartDashboard from '../components/LineChartDashboard';
 import BarChartHorizontalDashboard from '../components/BarChartHorizontalDashboard';
 import MemberTable from '../components/MemberTable';
-import Navbar from '../commponents/Navbar';
+import Navbar from '../components/Navbar';
 import './Dashboard.css'
 import { Card } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,8 +15,8 @@ const dashboard = () => {
         <h2> Dashboard </h2>
       </div>
       <div className="flex-container">
+        <Navbar></Navbar>
         <div className="flex-child1">
-          <Navbar></Navbar>
           <Card border="light">
             <Card.Body >
               <LineChartDashboard />
@@ -40,9 +40,7 @@ const dashboard = () => {
           </Card.Body>
         </Card>
       </div>
-
-
-    </div>
+    </div >
   )
 }
 

@@ -1,0 +1,36 @@
+.navbar .navbar-nav .nav-link {
+    color: #000000;
+    font-size: 18px;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #FF6900;
+}
+
+.logo-image img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: -6px;
+}
+
+.navbar {
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    justify-content: start;
+    position: fixed;
+    top: 0;
+}
+
+.nav-link {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+}
+
+.nav-item {}
