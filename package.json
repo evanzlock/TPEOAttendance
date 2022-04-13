@@ -4,7 +4,8 @@
   "description": "",
   "main": "z_index.js",
   "scripts": {
-    "start": "node z_index"
+    "start": "node z_index",
+    "build": "cd frontend && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
