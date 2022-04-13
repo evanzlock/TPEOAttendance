@@ -242,7 +242,9 @@ app.put('/update', async (req, res) => {
   }
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
   let meetingNumber = parseInt(retrieveInfo.properties[propertyType].number)
-  let newMeetingNumber = meetingNumber + 1;
+  let newMeetingNumber = meetingNumber;
+  console.log(newMeetingNumber);
+  console.log(meetingNumber);
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {

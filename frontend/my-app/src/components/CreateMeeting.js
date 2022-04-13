@@ -24,7 +24,7 @@ export default function CreateMeeting(props) {
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
     useEffect(() => {
-        fetch(`${URL}/meeting/${props.type}`, {
+        fetch(`${url}/meeting/${props.type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
