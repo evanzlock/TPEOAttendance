@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import MaterialTable from '@material-table/core'
 import configData from '../configurl.json';
+import Navbar from '../Components/navbar';
+
 var URL = configData.URL;
+
 
 const MemberTable = () => {
 
@@ -47,8 +50,15 @@ const MemberTable = () => {
 
   
     return (
-      <div>
-        <MaterialTable columns={columns} data={data} title="All Members" options={options}/>
+      <div className="flex-nav">
+        <div className = 'navBar'>
+          <Navbar></Navbar>
+        </div>
+        <div className = 'table'>
+          <MaterialTable columns={columns} data={data} title="All Members" options={options}/>
+        </div>
+        
+        
       </div>
     );
 };

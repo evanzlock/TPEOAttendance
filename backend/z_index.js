@@ -12,16 +12,16 @@ const notion = new Client({ auth: process.env.NOTION_KEY });
 const path = require("path");
 
 // Have node 
-app.use("/app", express.static(path.resolve(__dirname, '../frontend/my-app/build')));
-app.use("/formpage", express.static(path.resolve(__dirname, '../formPage/my-app/build')));
+app.use("/app", express.static(path.resolve(__dirname, 'frontend/my-app/build')));
+app.use("/formpage", express.static(path.resolve(__dirname, 'formPage/my-app/build')));
 
 app.get('app/*', (req, res) => {
-  console.log(path.resolve(__dirname, '../frontend/my-app/build', 'index.html'))
-  res.sendFile(path.resolve(__dirname, '../frontend/my-app/build', 'index.html'));
+  console.log(path.resolve(__dirname, 'frontend/my-app/build', 'index.html'))
+  res.sendFile(path.resolve(__dirname, 'frontend/my-app/build', 'index.html'));
 })
 app.get('formpage/*', (req, res) => {
-  console.log(path.resolve(__dirname, '../formPage/my-app/build', 'index.html'))
-  res.sendFile(path.resolve(__dirname, '../formPage/my-app/build', 'index.html'));
+  console.log(path.resolve(__dirname, 'formPage/my-app/build', 'index.html'))
+  res.sendFile(path.resolve(__dirname, 'formPage/my-app/build', 'index.html'));
 })
 //middleware
 app.use(cors({
@@ -242,7 +242,9 @@ app.put('/update', async (req, res) => {
   }
   const retrieveInfo = await notion.pages.retrieve({ page_id: pageId });
   let meetingNumber = parseInt(retrieveInfo.properties[propertyType].number)
-  let newMeetingNumber = meetingNumber + 1;
+  let newMeetingNumber = meetingNumber;
+  console.log(newMeetingNumber);
+  console.log(meetingNumber);
   const response = await notion.pages.update({
     page_id: pageId,
     properties: {
