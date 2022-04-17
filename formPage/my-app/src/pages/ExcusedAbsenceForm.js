@@ -3,6 +3,7 @@ import {Card, Button, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './form.css';
 import configData from '../configurl.json';
+import Navbar from '../Components/navbar';
 var URL = configData.URL;
 
 
@@ -47,7 +48,11 @@ export default class ExcusedAbsenceForm extends React.Component {
 
     render() {
         return (
-        <div>
+        <div className='flex-nav'>
+        <div className = 'navBar'>
+            <Navbar></Navbar>
+        </div>
+        <div className = "form">
         <h1>Excused Absence Form</h1>
         <Card border = "dark">
             <Card.Body align = "center">
@@ -91,6 +96,7 @@ export default class ExcusedAbsenceForm extends React.Component {
             </Form>
             </Card.Body>
             </Card>
+           </div>
            </div>
         );
     }
