@@ -17,14 +17,13 @@ export default function Navbar() {
                     <div>
                         <a class="navbar-brand" href="/">
                             <div class="logo-image">
-                                <img src="tpeologo.png" href="#" class="img-fluid" alt="TPEO logo" />
+                                <img src="tpeologo.png" class="img-fluid" alt="TPEO logo" />
                             </div>
                         </a>
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/">
                                     Home
-                                    <span className="sr-only">(current)</span>
                                 </NavLink>
                             </li>
                             <li className="nav-item">

@@ -8,7 +8,7 @@ import TeamPage from './pages/teamPage';
 ReactDOM.render(
   <Router>
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/app" element={<Dashboard />} />
       <Route path="/meeting/:type" element={<TeamPage />} />
     </Routes>
   </Router>,
