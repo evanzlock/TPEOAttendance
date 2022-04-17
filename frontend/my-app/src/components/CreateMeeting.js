@@ -38,19 +38,20 @@ export default function CreateMeeting(props) {
                     code: meetingInfo.code,
                     type: meetingInfo.type,
                     startTime: meetingInfo.startTime,
-                    endTime: data.data.endTime
+                    endTime: data.data.endTime,
+                    tardyTime: meetingInfo.tardyTime
                 })
                 console.log(meetingNumber);
                 console.log(isActive);
             })
-    }, []);
+    }, [props.type]);
     const [meetingInfo, setInfo] = useState({
         code: "",
         type: props.type,
         startTime: null,
-        endTime: props.endTime
+        endTime: props.endTime,
+        tardyTime: null
     })
-    console.log('Time:', meetingInfo.endTime - Date.now());
     //send code, duration, and type to backend for attendance verification
     //change toggle info so generate meeting is shown again
     function cancel(e) {
@@ -121,7 +122,8 @@ export default function CreateMeeting(props) {
             code: meetingInfo.code,
             type: meetingInfo.type,
             startTime: meetingInfo.startTime,
-            endTime: meetingInfo.endTime
+            endTime: meetingInfo.endTime,
+            tardyTime: meetingInfo.tardyTime
         }
         var input = e.target.value;
         var key = e.target.id;
@@ -130,23 +132,18 @@ export default function CreateMeeting(props) {
             console.log(parseInt(input))
             newInfo['startTime'] = Date.now();
             newInfo['endTime'] = Date.now() + 60000 * parseInt(input);
+            newInfo['tardyTime'] = Date.now() + 600000;
         }
         else {
             newInfo[key] = input;
         }
         setInfo(newInfo);
     }
-    function showForm(e) {
-        e.preventDefault();
-        showInfo(true);
-    }
     // TODO: change toggle so ending a meeting shows generate meeting
     return (
         <div>
-            {/* <button onClick="showDiv()" id="initialButton">Create Meeting */}
-            {!toggleInfo && !isActive && <button style={style} variant="contained" onClick={showForm}>Generate Meeting #{meetingNumber}</button>}
             {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
-            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color = {props.color}></Timer>}
+            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color={props.color}></Timer>}
 
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
                 <input id="code" required onChange={(e) => handle(e)} placeholder="Enter meeting code" type="text"></input>

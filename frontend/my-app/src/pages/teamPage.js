@@ -8,11 +8,12 @@ import DonutChart from '../components/DonutChart';
 
 import { Card } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useParams } from 'react-router-dom';
 
 import './teamPage.css';
 
 const TeamPage = (props) => {
+
   return (
     <div>
       <div className="team">
