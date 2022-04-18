@@ -2,5 +2,5 @@
     "PROD_URL": "https://tpeoattendance.herokuapp.com",
     "DEV_URL": "http://localhost:5000",
     "URL": "https://tpeoattendance.herokuapp.com",
-    "ASSETS_BASED_URL": "https://tpeoattendance.herokuapp.com"
+    "ASSETS_BASED_URL": "https://tpeoattendance.herokuapp.com/app"
 }

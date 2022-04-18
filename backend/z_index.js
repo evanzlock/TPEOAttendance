@@ -171,6 +171,9 @@ app.put('/cancel', async (req, res) => {
       'Start Time': {
         number: null
       },
+      'Tardy Time': {
+        number: null
+      },
       'End Time': {
         number: null
       },
@@ -260,6 +263,9 @@ app.put('/update', async (req, res) => {
       'Start Time': {
         number: null
       },
+      'Tardy Time': {
+        number: null
+      },
       'End Time': {
         number: null
       },
@@ -326,6 +332,9 @@ app.post('/meeting', async (req, res) => {
       },
       'Start Time': {
         number: body.startTime
+      },
+      'End Time': {
+        number: body.tardyTime
       },
       'End Time': {
         number: body.endTime
