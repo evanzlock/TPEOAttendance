@@ -114,7 +114,7 @@ export default function CreateMeeting(props) {
             tardyTime: meetingInfo.tardyTime
         }
         var input = e.target.value;
-        var key = e.target.id;
+        var key = e.target.name;
         console.log(input)
         if (key === 'duration') {
             console.log(parseInt(input))
@@ -148,7 +148,7 @@ export default function CreateMeeting(props) {
                                 name="duration"
                                 placeholder='Meeting duration'
                                 type="number"
-                                onChange={e => this.handle(e)}
+                                onChange={e => handle(e)}
                             /></Form.Group>
                         </div>
                         {!isPending && <button className='button' variant="outline-light" style={{ color: "#00005c" }} onClick={e => submit(e)}>Start Meeting</button>
