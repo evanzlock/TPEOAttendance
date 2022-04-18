@@ -1,7 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import URL from '../configurl.json'
 export default function Navbar() {
+    console.log(URL);
+    console.log(URL.ASSETS_BASED_URL);
     var navItemStyle = {
         "fontFamily": 'Montserrat',
         "fontStyle": "normal",
@@ -17,7 +20,7 @@ export default function Navbar() {
                     <div>
                         <div className="navbar-brand">
                             <div className="logo-image">
-                                <img src="tpeologo.png" alt="TPEO logo" />
+                                <img src={`${URL.ASSETS_BASED_URL}/tpeologo.png`} alt="TPEO logo" />
                             </div>
                         </div>
                         <ul className="navbar-nav">
@@ -27,22 +30,22 @@ export default function Navbar() {
                                 </NavLink>
                             </li>
                             <li className="nav-item" style={navItemStyle}>
-                                <NavLink className="nav-link" to="/meeting/General">
+                                <NavLink className="nav-link" to="/app/meeting/General">
                                     General
                                 </NavLink>
                             </li>
                             <li className="nav-item" style={navItemStyle}>
-                                <NavLink className="nav-link" to="/meeting/Design">
+                                <NavLink className="nav-link" to="/app/meeting/Design">
                                     Design
                                 </NavLink>
                             </li>
                             <li className="nav-item" style={navItemStyle}>
-                                <NavLink className="nav-link" to="/meeting/Product">
+                                <NavLink className="nav-link" to="/app/meeting/Product">
                                     Product
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/meeting/Engineering">
+                                <NavLink className="nav-link" to="/app/meeting/Engineering">
                                     Engineering
                                 </NavLink>
                             </li>

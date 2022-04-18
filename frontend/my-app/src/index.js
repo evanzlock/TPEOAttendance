@@ -9,7 +9,7 @@ ReactDOM.render(
   <Router>
     <Routes>
       <Route path="/app" element={<Dashboard />} />
-      <Route path="/meeting/:type" element={<TeamPage />} />
+      <Route path="/app/meeting/:type" element={<TeamPage />} />
     </Routes>
   </Router>,
 
