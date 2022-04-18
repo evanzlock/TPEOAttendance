@@ -171,9 +171,6 @@ app.put('/cancel', async (req, res) => {
       'Start Time': {
         number: null
       },
-      'Tardy Time': {
-        number: null
-      },
       'End Time': {
         number: null
       },
@@ -263,9 +260,6 @@ app.put('/update', async (req, res) => {
       'Start Time': {
         number: null
       },
-      'Tardy Time': {
-        number: null
-      },
       'End Time': {
         number: null
       },
@@ -278,7 +272,7 @@ app.put('/update', async (req, res) => {
   for (var i = 0; i < members.length; i++) {
     var obj = members[i];
     if (obj != undefined) {
-      if (obj.team == meetingType || obj.team == 'General') {
+      if (obj.team == meetingType || meetingType == 'General') {
         //update member attendance database
         const pageId = obj.pageid;
         const response = await notion.pages.update({
@@ -333,9 +327,6 @@ app.post('/meeting', async (req, res) => {
       'Start Time': {
         number: body.startTime
       },
-      'Tardy Time': {
-        number: body.tardyTime
-      },
       'End Time': {
         number: body.endTime
       },
@@ -350,7 +341,7 @@ app.post('/meeting', async (req, res) => {
   for (var i = 0; i < members.length; i++) {
     var obj = members[i];
     if (obj != undefined) {
-      if (obj.team == meetingType || obj.team == 'General') {
+      if (obj.team == meetingType || meetingType == 'General') {
         const pageId = obj.pageid;
         const response = await notion.pages.update({
           page_id: pageId,
@@ -430,7 +421,7 @@ app.post('/updateCheckin', async (req, res) => {
     if (obj != undefined) {
       if (obj.name === name) {
         //ensures only general and team-specific meetings counted for attendance
-        if (obj.team != meetingType && obj.team != 'General') {
+        if (obj.team != meetingType && meetingType != 'General') {
           return res.json({ msg: 'You cannot sign in for this type of meetting based on your team.' });
         } else if (obj.checkedin == true) {
           return res.json({ msg: 'You have already signed in for this meeting.' });
