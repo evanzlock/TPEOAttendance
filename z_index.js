@@ -175,7 +175,7 @@ app.put('/cancel', async (req, res) => {
         number: null
       },
       'Tardy Time': {
-        number: body.tardyTime
+        number: null
       },
       [propertyType]: {
         number: meetingNum

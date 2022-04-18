@@ -10,8 +10,15 @@ export default function CreateMeeting(props) {
     const [isPending, setPending] = useState(false);
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
+    const [meetingInfo, setInfo] = useState({
+        code: "",
+        type: props.type,
+        startTime: null,
+        endTime: null,
+        tardyTime: null
+    })
     useEffect(() => {
-        fetch(`${url}/meeting/${props.type}`, {
+        fetch(`${url}/meeting/Engineering`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,12 +26,11 @@ export default function CreateMeeting(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data.data);
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
                 setInfo({
                     code: meetingInfo.code,
-                    type: props.type,
+                    type: 'Engineering',
                     startTime: meetingInfo.startTime,
                     endTime: data.data.endTime,
                     tardyTime: meetingInfo.tardyTime
@@ -44,8 +50,8 @@ export default function CreateMeeting(props) {
             .then(response => response.json())
             .then(data => {
                 console.log(data.data);
-                setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
+                console.log(isActive);
                 setInfo({
                     code: meetingInfo.code,
                     type: props.type,
@@ -56,15 +62,9 @@ export default function CreateMeeting(props) {
                 if (isActive) {
                     showInfo(!toggleInfo);
                 }
+                console.log(meetingInfo);
             })
-    }, [props.type]);
-    const [meetingInfo, setInfo] = useState({
-        code: "",
-        type: props.type,
-        startTime: null,
-        endTime: null,
-        tardyTime: null
-    })
+    }, [props.type, isActive, meetingInfo, toggleInfo]);
     //send code, duration, and type to backend for attendance verification
     //change toggle info so generate meeting is shown again
     function cancel(e) {
