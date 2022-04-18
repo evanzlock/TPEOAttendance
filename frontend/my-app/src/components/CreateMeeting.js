@@ -60,7 +60,7 @@ export default function CreateMeeting(props) {
         code: "",
         type: props.type,
         startTime: null,
-        endTime: props.endTime,
+        endTime: null,
         tardyTime: null
     })
     //send code, duration, and type to backend for attendance verification
