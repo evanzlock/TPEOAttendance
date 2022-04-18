@@ -12,31 +12,31 @@ export default function Navbar() {
     }
     return (
         <div className="navigation">
-            <nav className="navbar navbar-light">
+            <nav className="navbar bg-light">
                 <div className="container">
                     <div>
-                        <a class="navbar-brand" href="/">
-                            <div class="logo-image">
-                                <img src="tpeologo.png" class="img-fluid" alt="TPEO logo" />
+                        <div className="navbar-brand">
+                            <div className="logo-image">
+                                <img src="../../public/tpeologo.png" class="img-fluid" alt="TPEO logo" />
                             </div>
-                        </a>
+                        </div>
                         <ul className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/">
+                            <li className="nav-item" style={navItemStyle}>
+                                <NavLink className="nav-link" to="/app">
                                     Home
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/meeting/General">
                                     General
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/meeting/Design">
                                     Design
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/meeting/Product">
                                     Product
                                 </NavLink>

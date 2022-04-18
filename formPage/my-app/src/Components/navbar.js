@@ -15,11 +15,11 @@ export default function Navbar() {
             <nav className="navbar navbar-light bg-light">
                 <div className="container">
                     <div>
-                        <a class="navbar-brand" href="/">
-                            <div class="logo-image">
-                                <img src="tpeo.png" href="#" class="img-fluid" alt="TPEO logo" />
+                        <div className="navbar-brand">
+                            <div className="logo-image">
+                                <img src="tpeologo.png" class="img-fluid" alt="TPEO logo" />
                             </div>
-                        </a>
+                        </div>
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/formpage/checkinForm">

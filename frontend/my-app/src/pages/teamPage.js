@@ -15,35 +15,30 @@ import './teamPage.css';
 const TeamPage = (props) => {
   let { type } = useParams();
   return (
-    <div>
-      <div className="team">
+    <div className="flex-team">
+      <div className="navBar">
         <Navbar></Navbar>
-        <div className="title">
-          <h5> {type} Meetings </h5>
+      </div>
+      <div className="meetingcharts">
+        <h5> {type} Meetings </h5>
+        <div className="meetingbutton">
+          <CreateMeeting color={props.color} type={type} />
         </div>
-
-        <div className="flex-container-column">
-          <div className="button">
-            <CreateMeeting color={props.color} type={type} />
+        <div className="charts">
+          <div className="flex1">
+            <DonutChart type={type} color={props.color} />
           </div>
-          <div className="flex-container-row">
-            <div className="flex1">
-              <DonutChart type={type} color={props.color} />
-            </div>
-            <div className="flex2">
-              <Card border="light">
-                <Card.Body >
-                  <MeetingBarChart type={type} color={props.color} />
-                </Card.Body>
-              </Card>
-            </div>
+          <div className="flex2">
+            <Card border="light">
+              <Card.Body >
+                <MeetingBarChart type={type} color={props.color} />
+              </Card.Body>
+            </Card>
           </div>
+        </div>
+        <div className="table">
           <MemberTable type={type} />
         </div>
-
-
-
-
       </div>
     </div>
   )
