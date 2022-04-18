@@ -54,7 +54,7 @@ export default function CreateMeeting(props) {
                     tardyTime: meetingInfo.tardyTime
                 })
                 if (isActive) {
-                    toggleInfo(!showInfo);
+                    showInfo(!toggleInfo);
                 }
             })
     }, [props.type]);
