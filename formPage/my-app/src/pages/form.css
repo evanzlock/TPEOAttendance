@@ -1,6 +1,6 @@
 .form {
     margin-top: 100px;
-    margin-right: 70px;
+    margin-right: 250px;
     margin-left: 100px;
     align-items: center;
     width: 1032px;
@@ -46,7 +46,7 @@
 .flex-nav {
     display: flex;
     flex-direction: row;
-    
+
 }
 
 .navBar {

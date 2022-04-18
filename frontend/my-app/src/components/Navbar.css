@@ -22,13 +22,14 @@
 
 .navbar {
     width: 250px;
-    height: 135vh;
+    height: 150vh;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
     position: fixed;
     top: 0;
     overflow: hidden;
+    background-color: #FFFFFF;
 }
 
 .nav-link {

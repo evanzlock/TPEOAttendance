@@ -1,17 +1,20 @@
 .flex-container {
     display: flex;
     flex-direction: row;
-    margin-left: 300px;
 }
 
 .charts {
     display: flex;
-    flex-direction: row
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .membercharts {
     display: flex;
     flex-direction: column;
+    margin-right: 200px;
+    margin-top: 60px;
 }
 
 .flex-child1 {
@@ -24,7 +27,6 @@
     background: #FFFFFF;
     box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
-    margin-left: 40px;
     margin-right: 40px;
     margin-top: 40px;
     margin-bottom: 40px;
@@ -50,14 +52,13 @@
 .flex-dash {
     display: flex;
     flex-direction: row;
-    background-color: #E5E5E5;
+    background-color: #f8f8f8;
     align-items: start;
 }
 
 .navBar {
     flex: 1;
     margin-bottom: 20px;
-    margin-right: 100px;
     align-items: flex-start;
 }
 
@@ -70,6 +71,5 @@
 .title {
     text-align: center;
     width: 200px;
-    margin-left: 300px;
     padding-top: 20px;
 }

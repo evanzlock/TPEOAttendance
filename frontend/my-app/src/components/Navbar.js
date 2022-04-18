@@ -12,12 +12,12 @@ export default function Navbar() {
     }
     return (
         <div className="navigation">
-            <nav className="navbar bg-light">
+            <nav className="navbar">
                 <div className="container">
                     <div>
                         <div className="navbar-brand">
                             <div className="logo-image">
-                                <img src="tpeologo.png" class="img-fluid" alt="TPEO logo" />
+                                <img src="tpeologo.png" alt="TPEO logo" />
                             </div>
                         </div>
                         <ul className="navbar-nav">
