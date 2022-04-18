@@ -51,6 +51,10 @@
     border-radius: 10px;
 }
 
+.h1 {
+    margin-bottom: 60px;
+}
+
 .flex2 {
     margin-top: 5px;
     margin-left: 70px;
@@ -82,7 +86,8 @@
 
 .charts {
     display: flex;
-    flex-direction: row
+    flex-direction: row;
+    margin-top: 60px;
 }
 
 .team {

@@ -137,7 +137,7 @@ export default function CreateMeeting(props) {
                             <Form.Group as={Row}> <Form.Control class="form in-line"
                                 style={{ backgroundColor: "#DADADA" }}
                                 name="code"
-                                placeholder='Enter a meeting code'
+                                placeholder='Meeting code'
                                 type="text"
                                 onChange={e => handle(e)}
                             /></Form.Group>
@@ -146,22 +146,31 @@ export default function CreateMeeting(props) {
                             <Form.Group as={Row}><Form.Control class="form in-line"
                                 style={{ backgroundColor: "#DADADA" }}
                                 name="duration"
-                                placeholder='Enter a meeting duration'
+                                placeholder='Meeting duration'
                                 type="number"
                                 onChange={e => this.handle(e)}
                             /></Form.Group>
                         </div>
+                        {!isPending && <button className='button' variant="outline-light" style={{ color: "#00005c" }} onClick={e => submit(e)}>Start Meeting</button>
+                        }
+                        {isPending && <button className="button" disabled type="submit">Generating Meeting</button>}
                     </Row>
                 </Form>
-                {!isPending && <Button className='button' size="lg" variant="outline-light" style={{ color: "#00005c" }} onClick={e => this.onSubmit(e)}>Start Meeting</Button>
-                }
-                {isPending && <Button className="button" disabled type="submit">Generating Meeting</Button>}
             </form>}
-            {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
+            {!toggleInfo && isActive &&
+                <div className="flex-end">
+                    <h2>There is a meeting in progress. </h2>
+                    <Timer time={meetingInfo.endTime - Date.now()} color={props.color}></Timer>
+                    <div className="buttons">
+                        <Button variant="danger" onClick={cancel}>Cancel Meeting</Button>
+                        <Button onClick={end}>End Meeting</Button>
+                    </div>
+                </div>}
+            {/* {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
             {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color={props.color}></Timer>}
             {/* {isActive && <Timer minutes={meetingInfo.duration}></Timer>} */}
-            {isActive && <Button onClick={cancel}>Cancel Meeting</Button>}
-            {isActive && <Button onClick={end}>End Meeting</Button>}
+            {/* {isActive && <Button variant="danger" onClick={cancel}>Cancel Meeting</Button>}
+            {isActive && <Button onClick={end}>End Meeting</Button>} */}
         </div>
 
     )
