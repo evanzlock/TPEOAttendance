@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import URLs from "../configurl.json"
 export default function Navbar() {
     var navItemStyle = {
         "fontFamily": 'Montserrat',
@@ -10,6 +11,7 @@ export default function Navbar() {
         "lineHeight": "22px",
         color: "#000000"
     }
+    console.log(URLs);
     return (
         <div className="navigation">
             <nav className="navbar navbar-light bg-light">
@@ -17,7 +19,7 @@ export default function Navbar() {
                     <div>
                         <div className="navbar-brand">
                             <div className="logo-image">
-                                <img src="tpeologo.png" class="img-fluid" alt="TPEO logo" />
+                                <img src={`${URLs.ASSETS_BASED_URL}/tpeologo.png`} class="img-fluid" alt="TPEO logo" />
                             </div>
                         </div>
                         <ul className="navbar-nav ml-auto">

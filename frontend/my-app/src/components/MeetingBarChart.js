@@ -33,7 +33,7 @@ const MeetingBarChart = (props) => {
         }
         fetchData();
 
-    }, [])
+    }, [props.type])
 
     var data = {
         labels: chart.map(x => x.meetingNumber),
