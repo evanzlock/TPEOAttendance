@@ -11,7 +11,6 @@ export default function CreateMeeting(props) {
     const [isActive, setActive] = useState(false);
     const [meetingNumber, setMeetingNumber] = useState("");
     useEffect(() => {
-        console.log(`${url}/meeting/${props.type}`);
         fetch(`${url}/meeting/${props.type}`, {
             method: 'GET',
             headers: {
@@ -20,9 +19,6 @@ export default function CreateMeeting(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('DATA');
-                console.log(data);
-                console.log(data.activeMeeting);
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
                 setInfo({
@@ -32,8 +28,29 @@ export default function CreateMeeting(props) {
                     endTime: data.data.endTime,
                     tardyTime: meetingInfo.tardyTime
                 })
-                console.log(meetingNumber);
-                console.log(isActive);
+                if (isActive) {
+                    toggleInfo(!showInfo);
+                }
+            })
+    }, []);
+    useEffect(() => {
+        fetch(`${url}/meeting/${props.type}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setMeetingNumber(data.data.number);
+                setActive(data.data.activeMeeting);
+                setInfo({
+                    code: meetingInfo.code,
+                    type: props.type,
+                    startTime: meetingInfo.startTime,
+                    endTime: data.data.endTime,
+                    tardyTime: meetingInfo.tardyTime
+                })
                 if (isActive) {
                     toggleInfo(!showInfo);
                 }
@@ -59,16 +76,13 @@ export default function CreateMeeting(props) {
             body: info
         })
             .then(response => response.text())
-            .then(text => console.log(text))
-            .then(() => console.log("third then"),
+            .then(() =>
                 setActive(false),
-                showInfo(!toggleInfo),
-                console.log(isActive, toggleInfo));
+                showInfo(!toggleInfo));
     }
     function end(e) {
         e.preventDefault();
         const info = JSON.stringify(meetingInfo);
-        console.log(meetingInfo);
         fetch(`${url}/update`, {
             method: 'PUT',
             headers: {
@@ -77,20 +91,14 @@ export default function CreateMeeting(props) {
             body: info
         })
             .then(response => response.text())
-            .then(text => console.log(text),
-                console.log(isActive),
-                console.log(toggleInfo))
             .then(() => setActive(false),
                 showInfo(!toggleInfo),
-                setActive(!isActive),
-                console.log(isActive),
-                console.log(toggleInfo));
+                setActive(!isActive))
     }
     function submit(e) {
         e.preventDefault();
         setPending(true);
         const info = JSON.stringify(meetingInfo);
-        console.log(info);
         fetch(`${url}/meeting`, {
             method: 'POST',
             headers: {
@@ -99,7 +107,6 @@ export default function CreateMeeting(props) {
             body: info
         })
             .then(response => response.text())
-            .then(text => console.log(text))
             .then(data => {
                 setPending(false);
                 setActive(true);
@@ -121,9 +128,7 @@ export default function CreateMeeting(props) {
         }
         var input = e.target.value;
         var key = e.target.name;
-        console.log(input)
         if (key === 'duration') {
-            console.log(parseInt(input))
             newInfo['startTime'] = Date.now();
             newInfo['endTime'] = Date.now() + 60000 * parseInt(input);
             newInfo['tardyTime'] = Date.now() + 600000;
