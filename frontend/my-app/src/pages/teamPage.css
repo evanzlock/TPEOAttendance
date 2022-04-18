@@ -74,7 +74,7 @@
 .meetingcharts {
     display: flex;
     flex-direction: column;
-    margin-right: 250px;
+    margin-right: 100px;
     margin-top: 60px;
 }
 
@@ -87,7 +87,6 @@
 .charts {
     display: flex;
     flex-direction: row;
-    margin-top: 60px;
 }
 
 .team {
