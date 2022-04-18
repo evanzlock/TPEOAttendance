@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import configData from "../configurl.json";
-import Button from '@mui/material/Button';
 import Timer from "./Timer";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import './CreateMeeting.css'
 var url = configData.URL;
 
@@ -141,7 +140,7 @@ export default function CreateMeeting(props) {
                         name="code"
                         placeholder='Enter a meeting code'
                         type="text"
-                        onChange={e => this.handle(e)}
+                        onChange={e => handle(e)}
                     />
                 </div>
                 <div className="durationField">
@@ -153,7 +152,8 @@ export default function CreateMeeting(props) {
                         onChange={e => this.handle(e)}
                     />
                 </div>
-                {!isPending && <Button className="button" variant="contained" type="submit">Begin Meeting</Button>}
+                {!isPending && <Button className='button' size="lg" variant="outline-light" style={{ color: "#00005c" }} onClick={e => this.onSubmit(e)}>Start Meeting</Button>
+                }
                 {isPending && <button className="button" disabled type="submit">Generating Meeting</button>}
             </form>}
             {/* {isActive && <Timer minutes={meetingInfo.duration}></Timer>} */}

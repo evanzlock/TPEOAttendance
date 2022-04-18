@@ -20,7 +20,7 @@ const TeamPage = (props) => {
         <Navbar></Navbar>
       </div>
       <div className="meetingcharts">
-        <h5> {type} Meetings </h5>
+        <h1> {type} Meetings </h1>
         <div className="meetingbutton">
           <CreateMeeting color={props.color} type={type} />
         </div>

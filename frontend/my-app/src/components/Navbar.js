@@ -17,10 +17,10 @@ export default function Navbar() {
                     <div>
                         <div className="navbar-brand">
                             <div className="logo-image">
-                                <img src="../../public/tpeologo.png" class="img-fluid" alt="TPEO logo" />
+                                <img src="tpeologo.png" class="img-fluid" alt="TPEO logo" />
                             </div>
                         </div>
-                        <ul className="navbar-nav ml-auto">
+                        <ul className="navbar-nav">
                             <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/app">
                                     Home

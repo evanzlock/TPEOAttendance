@@ -15,11 +15,17 @@
     margin-top: -6px;
 }
 
-.navbar {
-    width: 250px;
-    height: 100vh;
+.navbar-nav {
     display: flex;
     justify-content: flex-start;
+}
+
+.navbar {
+    width: 250px;
+    height: 135vh;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
     position: fixed;
     top: 0;
     overflow: hidden;

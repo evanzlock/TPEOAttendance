@@ -57,7 +57,8 @@
 .navBar {
     flex: 1;
     margin-bottom: 20px;
-    margin-right: 30px;
+    margin-right: 100px;
+    align-items: flex-start;
 }
 
 .table {

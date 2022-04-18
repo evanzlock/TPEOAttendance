@@ -3,9 +3,10 @@
     margin-bottom: 50px;
 }
 
-.container {
+.meeting-container {
     display: flex;
     flex-direction: row;
+    align-items: space-between;
 }
 
 .codeField {

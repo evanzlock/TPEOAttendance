@@ -18,6 +18,7 @@
 .meetingbutton {
     display: flex;
     flex-direction: row;
+    width: 1000px;
 }
 
 .flexbutton {
