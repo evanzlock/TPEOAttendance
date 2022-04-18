@@ -64,7 +64,7 @@ export default function CreateMeeting(props) {
                 }
                 console.log(meetingInfo);
             })
-    }, [props.type, isActive, meetingInfo, toggleInfo]);
+    }, [props.type]);
     //send code, duration, and type to backend for attendance verification
     //change toggle info so generate meeting is shown again
     function cancel(e) {
