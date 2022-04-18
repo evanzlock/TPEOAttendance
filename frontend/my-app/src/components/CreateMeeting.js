@@ -31,6 +31,9 @@ export default function CreateMeeting(props) {
                 })
                 console.log(meetingNumber);
                 console.log(isActive);
+                if (isActive) {
+                    toggleInfo(!showInfo);
+                }
             })
     }, [props.type]);
     const [meetingInfo, setInfo] = useState({
