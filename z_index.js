@@ -15,11 +15,11 @@ const path = require("path");
 app.use("/app", express.static(path.resolve(__dirname, 'frontend/my-app/build')));
 app.use("/formpage", express.static(path.resolve(__dirname, 'formPage/my-app/build')));
 
-app.get('app/*', (req, res) => {
+app.get('/app/*', (req, res) => {
   console.log(path.resolve(__dirname, 'frontend/my-app/build', 'index.html'))
   res.sendFile(path.resolve(__dirname, 'frontend/my-app/build', 'index.html'));
 })
-app.get('formpage/*', (req, res) => {
+app.get('/formpage/*', (req, res) => {
   console.log(path.resolve(__dirname, 'formPage/my-app/build', 'index.html'))
   res.sendFile(path.resolve(__dirname, 'formPage/my-app/build', 'index.html'));
 })
