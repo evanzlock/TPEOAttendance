@@ -130,9 +130,6 @@ export default function CreateMeeting(props) {
     // TODO: change toggle so ending a meeting shows generate meeting
     return (
         <div className="meeting-container">
-            {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
-            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color={props.color}></Timer>}
-
             {toggleInfo && <form onSubmit={(e) => submit(e)}>
                 <div className="codeField">
                     <Form.Control
@@ -156,6 +153,8 @@ export default function CreateMeeting(props) {
                 }
                 {isPending && <button className="button" disabled type="submit">Generating Meeting</button>}
             </form>}
+            {!toggleInfo && isActive && <h1>There is a meeting in progress.</h1>}
+            {!toggleInfo && isActive && meetingInfo.endTime > 0 && meetingInfo.endTime > Date.now() && <Timer time={meetingInfo.endTime - Date.now()} color={props.color}></Timer>}
             {/* {isActive && <Timer minutes={meetingInfo.duration}></Timer>} */}
             {isActive && <button onClick={cancel}>Cancel Meeting</button>}
             {isActive && <button onClick={end}>End Meeting</button>}
