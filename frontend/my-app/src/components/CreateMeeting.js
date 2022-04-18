@@ -20,7 +20,9 @@ export default function CreateMeeting(props) {
         })
             .then(response => response.json())
             .then(data => {
+                console.log('DATA');
                 console.log(data);
+                console.log(data.activeMeeting);
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
                 setInfo({
@@ -112,7 +114,7 @@ export default function CreateMeeting(props) {
     function handle(e) {
         let newInfo = {
             code: meetingInfo.code,
-            type: meetingInfo.type,
+            type: props.type,
             startTime: meetingInfo.startTime,
             endTime: meetingInfo.endTime,
             tardyTime: meetingInfo.tardyTime
