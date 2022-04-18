@@ -174,6 +174,9 @@ app.put('/cancel', async (req, res) => {
       'End Time': {
         number: null
       },
+      'Tardy Time': {
+        number: body.tardyTime
+      },
       [propertyType]: {
         number: meetingNum
       }
@@ -263,6 +266,9 @@ app.put('/update', async (req, res) => {
       'End Time': {
         number: null
       },
+      'Tardy Time': {
+        number: null
+      },
       [propertyType]: {
         number: newMeetingNumber
       }
@@ -326,6 +332,9 @@ app.post('/meeting', async (req, res) => {
       },
       'Start Time': {
         number: body.startTime
+      },
+      'Tardy Time': {
+        number: body.tardyTime
       },
       'End Time': {
         number: body.endTime
