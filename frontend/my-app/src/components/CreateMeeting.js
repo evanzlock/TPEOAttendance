@@ -138,7 +138,7 @@ export default function CreateMeeting(props) {
                                 style={{ backgroundColor: "#DADADA" }}
                                 name="code"
                                 placeholder='Meeting code'
-                                type="text"
+                                type="number"
                                 onChange={e => handle(e)}
                             /></Form.Group>
                         </div>
