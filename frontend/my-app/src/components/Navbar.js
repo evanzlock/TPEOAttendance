@@ -3,8 +3,6 @@ import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import URL from '../configurl.json'
 export default function Navbar() {
-    console.log(URL);
-    console.log(URL.ASSETS_BASED_URL);
     var navItemStyle = {
         "fontFamily": 'Montserrat',
         "fontStyle": "normal",

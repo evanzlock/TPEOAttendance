@@ -19,6 +19,7 @@ export default function CreateMeeting(props) {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data.data);
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
                 setInfo({
@@ -29,7 +30,7 @@ export default function CreateMeeting(props) {
                     tardyTime: meetingInfo.tardyTime
                 })
                 if (isActive) {
-                    toggleInfo(!showInfo);
+                    showInfo(!toggleInfo);
                 }
             })
     }, []);
@@ -42,6 +43,7 @@ export default function CreateMeeting(props) {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data.data);
                 setMeetingNumber(data.data.number);
                 setActive(data.data.activeMeeting);
                 setInfo({
