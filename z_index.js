@@ -333,7 +333,7 @@ app.post('/meeting', async (req, res) => {
       'Start Time': {
         number: body.startTime
       },
-      'End Time': {
+      'Tardy Time': {
         number: body.tardyTime
       },
       'End Time': {
