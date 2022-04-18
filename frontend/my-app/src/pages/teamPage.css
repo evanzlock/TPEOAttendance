@@ -2,13 +2,26 @@
     display: flex;
     flex-direction: row;
 }
+
+.flex-team {
+    display: flex;
+    flex-direction: row;
+    background-color: #F8F8F8;
+    align-items: start;
+}
+
 .flex-container-column {
     display: flex;
     flex-direction: column;
 }
 
+.meetingbutton {
+    display: flex;
+    flex-direction: column;
+}
+
 .flexbutton {
-    
+
     width: 396px;
     height: '71px';
     background: #FFD5B8;
@@ -21,23 +34,26 @@
     line-height: '29px';
     color: '#000000';
     cursor: 'pointer';
-    
+
 }
 
 .flex1 {
     margin-top: 5px;
-    margin-left: 100px;
     margin-right: 20px;
     margin-bottom: 30px;
-width: 389px;
-height: 450px;
-left: 325px;
-top: 190px;
+    width: 389px;
+    height: 450px;
+    left: 325px;
+    top: 190px;
 
-background: #FFFFFF;
-box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
-border-radius: 10px;
-}  
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.h1 {
+    margin-bottom: 60px;
+}
 
 .flex2 {
     margin-top: 5px;
@@ -46,14 +62,33 @@ border-radius: 10px;
     margin-bottom: 20px;
     padding-bottom: 20px;
     width: 606px;
-height: 450px;
-left: 749px;
-top: 190px;
+    height: 450px;
+    left: 749px;
+    top: 190px;
 
-background: #FFFFFF;
-box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
-border-radius: 10px;
-} 
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.meetingcharts {
+    display: flex;
+    flex-direction: column;
+    margin-right: 250px;
+    margin-top: 60px;
+}
+
+.table {
+    flex: 14;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+
+.charts {
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+}
 
 .team {
     background-color: #E5E5E5;
@@ -61,8 +96,7 @@ border-radius: 10px;
 
 .title {
     text-align: center;
-    width:200px;
-    margin-left:20px;
+    width: 200px;
+    margin-left: 20px;
     padding-top: 20px;
 }
-

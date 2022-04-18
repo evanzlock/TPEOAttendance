@@ -13,7 +13,6 @@ ReactDOM.render(
       <Route path="/formpage/excusedAbsenceForm" element={<ExcusedAbsenceForm />} />
       <Route path="/formpage/memberTable" element={<MemberTable />} />
       <Route path="/formpage" element={<CheckinForm />} />
-      
     </Routes>
   </Router>,
 

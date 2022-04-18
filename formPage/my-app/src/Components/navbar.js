@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import URLs from "../configurl.json"
 export default function Navbar() {
     var navItemStyle = {
         "fontFamily": 'Montserrat',
@@ -10,16 +11,17 @@ export default function Navbar() {
         "lineHeight": "22px",
         color: "#000000"
     }
+    console.log(URLs);
     return (
         <div className="navigation">
             <nav className="navbar navbar-light bg-light">
                 <div className="container">
                     <div>
-                        <a class="navbar-brand" href="/">
-                            <div class="logo-image">
-                                <img src="tpeo.png" href="#" class="img-fluid" alt="TPEO logo" />
+                        <div className="navbar-brand">
+                            <div className="logo-image">
+                                <img src={`${URLs.ASSETS_BASED_URL}/tpeologo.png`} class="img-fluid" alt="TPEO logo" />
                             </div>
-                        </a>
+                        </div>
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item" style={navItemStyle}>
                                 <NavLink className="nav-link" to="/formpage/checkinForm">

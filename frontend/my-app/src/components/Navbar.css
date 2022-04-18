@@ -13,17 +13,23 @@
     border-radius: 50%;
     overflow: hidden;
     margin-top: -6px;
-    margin-bottom: 60px;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: flex-start;
 }
 
 .navbar {
     width: 250px;
-    height: 100vh;
+    height: 150vh;
     display: flex;
-    flex-direction: column;
     justify-content: flex-start;
+    flex-direction: column;
     position: fixed;
     top: 0;
+    overflow: hidden;
+    background-color: #FFFFFF;
 }
 
 .nav-link {

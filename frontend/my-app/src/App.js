@@ -2,14 +2,16 @@ import './App.css';
 
 import Dashboard from './pages/dashboard';
 import TeamPage from './pages/teamPage';
-
+import { URLs } from './configurl.json'
 function App() {
+  console.log('sgaefaf');
+  console.log(URLs.ASSETS_BASED_URL);
   return (
     <div className="App">
-      
-      <TeamPage type='Engineering' color = '#FFC4DC'/>
-       
-      
+
+      <TeamPage type='Engineering' color='#FFC4DC' />
+
+
       {/*
       //TODO: with navbar update with routing
       <Dashboard/>
